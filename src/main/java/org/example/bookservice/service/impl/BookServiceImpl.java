@@ -44,7 +44,6 @@ public class BookServiceImpl implements BookService {
             Set<Integer> authorIds,
             Pageable pageable) {
 
-        // Perform filtering using custom repository or specifications
         return bookRepository.findAllWithFilters(title, isbn, publisherId, publishYear, minPrice, maxPrice, categoryIds, authorIds, pageable)
                 .map(this::mapToResponse);
     }
@@ -125,7 +124,7 @@ public class BookServiceImpl implements BookService {
     private AuthorResponse mapAuthorToResponse(Author author) {
         AuthorResponse response = new AuthorResponse();
         response.setId(author.getId());
-        response.setName(author.getFullName());
+        response.setFullName(author.getFullName());
         return response;
     }
 

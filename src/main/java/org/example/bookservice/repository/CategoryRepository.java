@@ -11,9 +11,11 @@ import org.springframework.data.repository.query.Param;
 public interface CategoryRepository extends JpaRepository<Category, Integer>, JpaSpecificationExecutor<Category> {
     boolean existsByNameIgnoreCase(String name);
 
-    @Query("SELECT c FROM Category c " +
-            "WHERE c.deleteFlg = false " +
-            "AND (:name IS NULL OR LOWER(c.name) LIKE LOWER(CONCAT('%', :name, '%')))")
+    @Query("""
+            SELECT c FROM Category c
+                WHERE c.deleteFlg = false
+                AND (:name IS NULL OR LOWER(c.name) LIKE LOWER(CONCAT('%', :name, '%')))
+            """)
     Page<Category> findAllWithFilters(
             @Param("name") String name,
             Pageable pageable);

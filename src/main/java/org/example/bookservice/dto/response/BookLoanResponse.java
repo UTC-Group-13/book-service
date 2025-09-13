@@ -5,17 +5,26 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-// Response model for reads
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PublisherResponse {
+public class BookLoanResponse {
     private Integer id;
-    private String name;
-    private String description;
+    private Integer studentId;
+    private Integer bookId;
+    private Integer adminId;
+
+    private LocalDate borrowDate;
+    private LocalDate dueDate;
+    private LocalDate returnDate;
+    private String status;
+    private BigDecimal fee;
+
     private Boolean deleteFlg;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

@@ -1,0 +1,104 @@
+package org.example.bookservice.service.impl;
+
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.example.bookservice.dto.request.PublisherRequest;
+import org.example.bookservice.dto.response.PublisherResponse;
+import org.example.bookservice.entity.Publisher;
+import org.example.bookservice.repository.PublisherRepository;
+import org.example.bookservice.service.PublisherService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+
+@Service
+@RequiredArgsConstructor
+public class PublisherServiceImpl implements PublisherService {
+
+    private final PublisherRepository publisherRepository;
+
+    @Override
+    public Page<PublisherResponse> getAllPublishers(String name, Pageable pageable) {
+        return publisherRepository
+                .findAllWithFilters(name, pageable)
+                .map(this::toResponse);
+    }
+
+    @Override
+    public PublisherResponse createPublisher(PublisherRequest request) {
+        if (request.getName() == null || request.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Publisher name is required");
+        }
+        if (publisherRepository.existsByNameIgnoreCase(request.getName().trim())) {
+            throw new IllegalArgumentException("Publisher name already exists");
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        Publisher entity = Publisher.builder()
+                .name(request.getName().trim())
+                .description(request.getDescription())
+                .deleteFlg(false)
+                .createdAt(now)
+                .updatedAt(now)
+                .build();
+
+        return toResponse(publisherRepository.save(entity));
+    }
+
+    @Override
+    public PublisherResponse getPublisherById(Integer id) {
+        Publisher entity = publisherRepository.findById(id)
+                .filter(p -> Boolean.FALSE.equals(p.getDeleteFlg()))
+                .orElseThrow(() -> new EntityNotFoundException("Publisher not found"));
+        return toResponse(entity);
+    }
+
+    @Override
+    public PublisherResponse updatePublisher(Integer id, PublisherRequest request) {
+        Publisher entity = publisherRepository.findById(id)
+                .filter(p -> Boolean.FALSE.equals(p.getDeleteFlg()))
+                .orElseThrow(() -> new EntityNotFoundException("Publisher not found"));
+
+        if (request.getName() != null) {
+            String newName = request.getName().trim();
+            if (newName.isEmpty()) {
+                throw new IllegalArgumentException("Publisher name cannot be empty");
+            }
+            if (!newName.equalsIgnoreCase(entity.getName())
+                    && publisherRepository.existsByNameIgnoreCase(newName)) {
+                throw new IllegalArgumentException("Publisher name already exists");
+            }
+            entity.setName(newName);
+        }
+        if (request.getDescription() != null) {
+            entity.setDescription(request.getDescription());
+        }
+
+        entity.setUpdatedAt(LocalDateTime.now());
+        return toResponse(publisherRepository.save(entity));
+    }
+
+    @Override
+    public void deletePublisher(Integer id) {
+        Publisher entity = publisherRepository.findById(id)
+                .filter(p -> Boolean.FALSE.equals(p.getDeleteFlg()))
+                .orElseThrow(() -> new EntityNotFoundException("Publisher not found"));
+
+        entity.setDeleteFlg(true); // soft delete
+        entity.setUpdatedAt(LocalDateTime.now());
+        publisherRepository.save(entity);
+    }
+
+    private PublisherResponse toResponse(Publisher entity) {
+        return PublisherResponse.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .deleteFlg(entity.getDeleteFlg())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
+                .build();
+    }
+}

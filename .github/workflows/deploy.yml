@@ -1,0 +1,40 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASS }}
+          script: |
+            cd /home/utc/book-service
+
+            echo ">>> Pull code mới nhất"
+            git reset --hard
+            git pull origin master
+
+            echo ">>> Stop & remove container cũ"
+            docker stop book-service || true
+            docker rm book-service || true
+
+            echo ">>> Build Docker image mới"
+            docker build -t book-service .
+
+            echo ">>> Run container mới"
+            docker run -d --name book-service -p 8080:8080 \
+              -e DB_URL="${{ secrets.DB_URL }}" \
+              -e DB_USER="${{ secrets.DB_USER }}" \
+              -e DB_PASS="${{ secrets.DB_PASS }}" \
+              book-service

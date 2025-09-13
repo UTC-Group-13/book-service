@@ -32,9 +32,5 @@ jobs:
             echo ">>> Build Docker image mới"
             docker build -t book-service .
 
-            echo ">>> Run container mới"
-            docker run -d --name book-service -p 8080:8080 \
-              -e DB_URL="${{ secrets.DB_URL }}" \
-              -e DB_USER="${{ secrets.DB_USER }}" \
-              -e DB_PASS="${{ secrets.DB_PASS }}" \
-              book-service
+            echo ">>> Run container mới với .env"
+            docker run -d --name book-service -p 8080:8080 --env-file .env book-service

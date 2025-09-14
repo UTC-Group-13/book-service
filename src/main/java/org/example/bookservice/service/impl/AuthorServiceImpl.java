@@ -1,7 +1,8 @@
 package org.example.bookservice.service.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.example.bookservice.constant.ErrorCode;
+import org.example.bookservice.dto.exception.BusinessException;
 import org.example.bookservice.dto.request.AuthorRequest;
 import org.example.bookservice.dto.response.AuthorResponse;
 import org.example.bookservice.entity.Author;
@@ -21,12 +22,8 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public AuthorResponse createAuthor(AuthorRequest request) {
-        if (request.getFullName() == null || request.getFullName().isBlank()) {
-            throw new IllegalArgumentException("Author fullName is required");
-        }
-        // Optional uniqueness guard
         if (authorRepository.existsByFullNameIgnoreCase(request.getFullName())) {
-            throw new IllegalArgumentException("Author fullName already exists");
+            throw new BusinessException("AUTHOR_EXISTS","Tác giả đã tồn tại");
         }
 
         Author author = Author.builder()
@@ -55,7 +52,8 @@ public class AuthorServiceImpl implements AuthorService {
     public AuthorResponse getAuthorById(Integer id) {
         Author author = authorRepository.findById(id)
                 .filter(a -> Boolean.FALSE.equals(a.getDeleteFlg()))
-                .orElseThrow(() -> new EntityNotFoundException("Author not found"));
+                .orElseThrow(() -> new BusinessException(ErrorCode.AUTHOR_NOT_FOUND.getMessage(),
+                        ErrorCode.AUTHOR_NOT_FOUND.getCode()));
         return toResponse(author);
     }
 
@@ -63,13 +61,8 @@ public class AuthorServiceImpl implements AuthorService {
     public AuthorResponse updateAuthor(Integer id, AuthorRequest request) {
         Author author = authorRepository.findById(id)
                 .filter(a -> Boolean.FALSE.equals(a.getDeleteFlg()))
-                .orElseThrow(() -> new EntityNotFoundException("Author not found"));
-
-        if (request.getFullName() != null) author.setFullName(request.getFullName());
-        if (request.getBirthDate() != null) author.setBirthDate(request.getBirthDate());
-        if (request.getNationality() != null) author.setNationality(request.getNationality());
-        if (request.getBiography() != null) author.setBiography(request.getBiography());
-        if (request.getEmail() != null) author.setEmail(request.getEmail());
+                .orElseThrow(() -> new BusinessException(ErrorCode.AUTHOR_NOT_FOUND.getMessage(),
+                        ErrorCode.AUTHOR_NOT_FOUND.getCode()));
         author.setUpdatedAt(LocalDateTime.now());
 
         return toResponse(authorRepository.save(author));
@@ -79,7 +72,8 @@ public class AuthorServiceImpl implements AuthorService {
     public void deleteAuthor(Integer id) {
         Author author = authorRepository.findById(id)
                 .filter(a -> Boolean.FALSE.equals(a.getDeleteFlg()))
-                .orElseThrow(() -> new EntityNotFoundException("Author not found"));
+                .orElseThrow(() -> new BusinessException(ErrorCode.AUTHOR_NOT_FOUND.getMessage(),
+                        ErrorCode.AUTHOR_NOT_FOUND.getCode()));
         author.setDeleteFlg(true); // soft delete
         author.setUpdatedAt(LocalDateTime.now());
         authorRepository.save(author);

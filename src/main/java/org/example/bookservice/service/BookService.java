@@ -2,6 +2,7 @@ package org.example.bookservice.service;
 
 import org.example.bookservice.dto.request.BookRequest;
 import org.example.bookservice.dto.response.BookResponse;
+import org.example.bookservice.entity.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -26,4 +27,6 @@ public interface BookService {
     BookResponse updateBook(Integer id, BookRequest bookRequest);
 
     void deleteBook(Integer id);
+
+    Book findById(Integer id);
 }

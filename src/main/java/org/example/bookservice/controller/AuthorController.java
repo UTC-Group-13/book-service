@@ -2,6 +2,7 @@ package org.example.bookservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.bookservice.dto.request.AuthorRequest;
 import org.example.bookservice.dto.response.AuthorResponse;
@@ -32,7 +33,7 @@ public class AuthorController {
 
     @Operation(summary = "Create an author", description = "Creates a new author")
     @PostMapping
-    public ResponseEntity<AuthorResponse> createAuthor(@RequestBody AuthorRequest request) {
+    public ResponseEntity<AuthorResponse> createAuthor(@Valid @RequestBody AuthorRequest request) {
         AuthorResponse created = authorService.createAuthor(request);
         return ResponseEntity.status(201).body(created);
     }

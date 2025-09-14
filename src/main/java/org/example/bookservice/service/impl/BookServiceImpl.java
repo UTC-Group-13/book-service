@@ -15,6 +15,7 @@ import org.example.bookservice.service.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -76,6 +77,13 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
         bookRepository.delete(book);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Book findById(Integer id) {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
     }
 
     private Book mapToEntity(BookRequest request) {

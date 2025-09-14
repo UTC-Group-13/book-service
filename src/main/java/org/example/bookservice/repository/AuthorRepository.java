@@ -24,4 +24,7 @@ public interface AuthorRepository extends JpaRepository<Author, Integer>, JpaSpe
             @Param("email") String email,
             Pageable pageable);
 
+
+    Page<Author> findByFullNameContainingIgnoreCase(String name, Pageable pageable);
+
 }

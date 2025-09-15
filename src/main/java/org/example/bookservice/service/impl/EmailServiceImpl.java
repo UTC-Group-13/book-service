@@ -15,6 +15,7 @@ import org.example.bookservice.repository.EmailRepository;
 import org.example.bookservice.service.BookService;
 import org.example.bookservice.service.EmailService;
 import org.example.bookservice.service.StudentService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,10 @@ public class EmailServiceImpl implements EmailService {
     private final BookService bookService;
     private final StudentService studentService;
     private final SpringTemplateEngine templateEngine;
+    @Value("${spring.mail.username}")
+    private String username;
+    @Value("${spring.mail.password}")
+    private String password;
 
     @Override
     public void sendEmail(SendEmailRequest sendEmailRequest) {
@@ -72,6 +77,8 @@ public class EmailServiceImpl implements EmailService {
             emailRepository.save(email);
         } catch (Exception e) {
             log.error("Error when send email: {}", e.getMessage(), e);
+            log.error("emailuser: {}", username);
+            log.error("emailpasswork: {}", password);
             email.setStatus(Status.FAILURE.getValue());
             emailRepository.save(email);
             throw new BusinessException(ErrorCode.SEND_EMAIL_ERROR.getCode(), ErrorCode.SEND_EMAIL_ERROR.getMessage());

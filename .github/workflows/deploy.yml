@@ -34,9 +34,6 @@ jobs:
             
             echo ">>> Kiểm tra EMAIL_USER trong .env"
             grep EMAIL_USER .env || echo "EMAIL_USER chưa được set!"
-            
-            echo ">>> Kiểm tra EMAIL_PASSWORD trong .env"
-            grep EMAIL_PASSWORD .env || echo "EMAIL_PASSWORD chưa được set!"
 
             echo ">>> Run container mới với .env"
             docker run -d --name book-service -p 8080:8080 --env-file .env book-service

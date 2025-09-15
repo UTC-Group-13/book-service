@@ -31,6 +31,9 @@ jobs:
 
             echo ">>> Build Docker image mới"
             docker build -t book-service .
+            
+            echo ">>> Kiểm tra EMAIL_USER trong .env"
+            grep EMAIL_USER .env || echo "EMAIL_USER chưa được set!"
 
             echo ">>> Run container mới với .env"
             docker run -d --name book-service -p 8080:8080 --env-file .env book-service

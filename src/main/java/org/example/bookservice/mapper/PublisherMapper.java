@@ -7,8 +7,8 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring") // để Spring quản lý
 public interface PublisherMapper {
-    PublisherResponse toPublisherResponse(Publisher Publisher);
+    PublisherResponse toPublisherResponse(Publisher publisher);
 
-    Publisher toPublisher(PublisherRequest PublisherRequest);
+    Publisher toPublisher(PublisherRequest publisherRequest);
 }
 

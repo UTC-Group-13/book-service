@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring") // để Spring quản lý
 public interface StudentMapper {
-    StudentResponse toStudentResponse(Student Student);
+    StudentResponse toStudentResponse(Student student);
 
 }
 

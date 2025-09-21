@@ -14,8 +14,8 @@ import java.util.Set;
 public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query("""
             SELECT b FROM Book b
-                LEFT JOIN b.categories c
-                LEFT JOIN b.authors a
+                LEFT JOIN Category c
+                LEFT JOIN Author a
             WHERE (:title IS NULL OR LOWER(b.title) LIKE LOWER(CONCAT('%', :title, '%')))
                 AND (:isbn IS NULL OR b.isbn = :isbn)
                 AND (:publisherId IS NULL OR b.publisher.id = :publisherId)

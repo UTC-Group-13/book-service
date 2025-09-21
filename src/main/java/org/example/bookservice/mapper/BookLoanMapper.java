@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring") // để Spring quản lý
 public interface BookLoanMapper {
-    BookLoanResponse toBookLoanResponse(BookLoan BookLoan);
+    BookLoanResponse toBookLoanResponse(BookLoan bookLoan);
 
-    BookLoan toBookLoan(BookLoanRequest BookLoanRequest);
+    BookLoan toBookLoan(BookLoanRequest bookLoanRequest);
 }

@@ -7,8 +7,8 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring") // để Spring quản lý
 public interface CategoryMapper {
-    CategoryResponse toCategoryResponse(Category Category);
+    CategoryResponse toCategoryResponse(Category category);
 
-    Category toCategory(CategoryRequest CategoryRequest);
+    Category toCategory(CategoryRequest categoryRequest);
 }
 

@@ -29,4 +29,6 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
             String classCode,
             Pageable pageable
     );
+
+    Student findStudentById(Integer id);
 }

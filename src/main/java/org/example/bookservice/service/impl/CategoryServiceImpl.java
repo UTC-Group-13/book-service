@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.example.bookservice.dto.request.CategoryRequest;
 import org.example.bookservice.dto.response.CategoryResponse;
 import org.example.bookservice.entity.Category;
+import org.example.bookservice.mapper.CategoryMapper;
 import org.example.bookservice.repository.CategoryRepository;
 import org.example.bookservice.service.CategoryService;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
 
     @Override
     public CategoryResponse createCategory(CategoryRequest request) {
@@ -32,14 +34,14 @@ public class CategoryServiceImpl implements CategoryService {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
-        return toResponse(categoryRepository.save(category));
+        return categoryMapper.toCategoryResponse(categoryRepository.save(category));
     }
 
     @Override
     public Page<CategoryResponse> getAllCategories(String name, Pageable pageable) {
         return categoryRepository
                 .findAllWithFilters(name, pageable)
-                .map(this::toResponse);
+                .map(categoryMapper::toCategoryResponse);
     }
 
     @Override
@@ -47,7 +49,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findById(id)
                 .filter(c -> Boolean.FALSE.equals(c.getDeleteFlg()))
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
-        return toResponse(category);
+        return categoryMapper.toCategoryResponse(category);
     }
 
     @Override
@@ -60,7 +62,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (request.getDescription() != null) category.setDescription(request.getDescription());
         category.setUpdatedAt(LocalDateTime.now());
 
-        return toResponse(categoryRepository.save(category));
+        return categoryMapper.toCategoryResponse(categoryRepository.save(category));
     }
 
     @Override
@@ -71,12 +73,5 @@ public class CategoryServiceImpl implements CategoryService {
         category.setDeleteFlg(true); // soft delete
         category.setUpdatedAt(LocalDateTime.now());
         categoryRepository.save(category);
-    }
-
-    private CategoryResponse toResponse(Category entity) {
-        CategoryResponse resp = new CategoryResponse();
-        resp.setId(entity.getId());
-        resp.setName(entity.getName());
-        return resp;
     }
 }

@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring") // để Spring quản lý
 public interface AuthorMapper {
-    AuthorResponse toAuthorResponse(Author Author);
+    AuthorResponse toAuthorResponse(Author author);
 
-    Author toAuthor(AuthorRequest AuthorRequest);
+    Author toAuthor(AuthorRequest authorRequest);
 }

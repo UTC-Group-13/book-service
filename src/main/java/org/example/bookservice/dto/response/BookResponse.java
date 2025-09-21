@@ -21,6 +21,6 @@ public class BookResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private PublisherResponse publisher; // Custom DTO for publisher
-    private Set<CategoryResponse> categories; // Custom DTOs for categories
-    private Set<AuthorResponse> authors; // Custom DTOs for authors
+    private Set<Integer> categoryIds; // Custom DTOs for categories
+    private Set<Integer> authorIds; // Custom DTOs for authors
 }

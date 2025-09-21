@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.bookservice.dto.response.StudentResponse;
 import org.example.bookservice.entity.Student;
+import org.example.bookservice.mapper.StudentMapper;
 import org.example.bookservice.repository.StudentRepository;
 import org.example.bookservice.service.StudentService;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
+    private final StudentMapper studentMapper;
 
     @Override
     public Page<StudentResponse> getAllStudents(
@@ -28,7 +30,7 @@ public class StudentServiceImpl implements StudentService {
     ) {
         return studentRepository
                 .findAllWithFilters(code, fullName, email, phone, departmentCode, classCode, pageable)
-                .map(this::toResponse);
+                .map(studentMapper::toStudentResponse);
     }
 
     @Override
@@ -36,21 +38,6 @@ public class StudentServiceImpl implements StudentService {
         Student student = studentRepository.findById(id)
                 .filter(s -> Boolean.FALSE.equals(s.getDeleteFlg()))
                 .orElseThrow(() -> new EntityNotFoundException("Student not found"));
-        return toResponse(student);
-    }
-
-    private StudentResponse toResponse(Student s) {
-        return StudentResponse.builder()
-                .id(s.getId())
-                .code(s.getCode())
-                .fullName(s.getFullName())
-                .email(s.getEmail())
-                .phone(s.getPhone())
-                .departmentCode(s.getDepartmentCode())
-                .classCode(s.getClassCode())
-                .deleteFlg(s.getDeleteFlg())
-                .createdAt(s.getCreatedAt())
-                .updatedAt(s.getUpdatedAt())
-                .build();
+        return studentMapper.toStudentResponse(student);
     }
 }

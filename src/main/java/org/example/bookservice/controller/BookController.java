@@ -26,7 +26,7 @@ public class BookController {
     @PostMapping("/search")
     public ResponseEntity<Page<BookResponse>> getAllBooks(@RequestBody BookSearchRequest request) {
 
-        Page<BookResponse> books = bookService.getAllBooks(title, isbn, publisherId, publishYear, minPrice, maxPrice, categoryIds, authorIds, pageable);
+        Page<BookResponse> books = bookService.getAllBooks(request);
         return ResponseEntity.ok(books);
     }
 

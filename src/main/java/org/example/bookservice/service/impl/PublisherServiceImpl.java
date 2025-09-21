@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.bookservice.dto.request.PublisherRequest;
 import org.example.bookservice.dto.response.PublisherResponse;
 import org.example.bookservice.entity.Publisher;
+import org.example.bookservice.mapper.PublisherMapper;
 import org.example.bookservice.repository.PublisherRepository;
 import org.example.bookservice.service.PublisherService;
 import org.springframework.data.domain.Page;
@@ -18,12 +19,13 @@ import java.time.LocalDateTime;
 public class PublisherServiceImpl implements PublisherService {
 
     private final PublisherRepository publisherRepository;
+    private final PublisherMapper publisherMapper;
 
     @Override
     public Page<PublisherResponse> getAllPublishers(String name, Pageable pageable) {
         return publisherRepository
                 .findAllWithFilters(name, pageable)
-                .map(this::toResponse);
+                .map(publisherMapper::toPublisherResponse );
     }
 
     @Override
@@ -44,7 +46,7 @@ public class PublisherServiceImpl implements PublisherService {
                 .updatedAt(now)
                 .build();
 
-        return toResponse(publisherRepository.save(entity));
+        return publisherMapper.toPublisherResponse(publisherRepository.save(entity));
     }
 
     @Override
@@ -52,7 +54,7 @@ public class PublisherServiceImpl implements PublisherService {
         Publisher entity = publisherRepository.findById(id)
                 .filter(p -> Boolean.FALSE.equals(p.getDeleteFlg()))
                 .orElseThrow(() -> new EntityNotFoundException("Publisher not found"));
-        return toResponse(entity);
+        return publisherMapper.toPublisherResponse(entity);
     }
 
     @Override
@@ -77,7 +79,7 @@ public class PublisherServiceImpl implements PublisherService {
         }
 
         entity.setUpdatedAt(LocalDateTime.now());
-        return toResponse(publisherRepository.save(entity));
+        return publisherMapper.toPublisherResponse(publisherRepository.save(entity));
     }
 
     @Override
@@ -89,16 +91,5 @@ public class PublisherServiceImpl implements PublisherService {
         entity.setDeleteFlg(true); // soft delete
         entity.setUpdatedAt(LocalDateTime.now());
         publisherRepository.save(entity);
-    }
-
-    private PublisherResponse toResponse(Publisher entity) {
-        return PublisherResponse.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .description(entity.getDescription())
-                .deleteFlg(entity.getDeleteFlg())
-                .createdAt(entity.getCreatedAt())
-                .updatedAt(entity.getUpdatedAt())
-                .build();
     }
 }

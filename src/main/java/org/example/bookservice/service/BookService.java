@@ -1,6 +1,7 @@
 package org.example.bookservice.service;
 
 import org.example.bookservice.dto.request.BookRequest;
+import org.example.bookservice.dto.request.BookSearchRequest;
 import org.example.bookservice.dto.response.BookResponse;
 import org.example.bookservice.entity.Book;
 import org.springframework.data.domain.Page;
@@ -11,16 +12,7 @@ import java.util.Set;
 public interface BookService {
     BookResponse createBook(BookRequest bookRequest);
 
-    Page<BookResponse> getAllBooks(
-            String title,
-            String isbn,
-            Integer publisherId,
-            Integer publishYear,
-            Integer minPrice,
-            Integer maxPrice,
-            Set<Integer> categoryIds,
-            Set<Integer> authorIds,
-            Pageable pageable);
+    Page<BookResponse> getAllBooks(BookSearchRequest request);
 
     BookResponse getBookById(Integer id);
 

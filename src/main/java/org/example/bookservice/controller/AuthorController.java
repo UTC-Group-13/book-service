@@ -9,7 +9,6 @@ import org.example.bookservice.dto.request.AuthorSearchRequest;
 import org.example.bookservice.dto.response.AuthorResponse;
 import org.example.bookservice.service.AuthorService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

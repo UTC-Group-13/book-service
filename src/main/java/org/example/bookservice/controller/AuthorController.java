@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.bookservice.dto.request.AuthorRequest;
+import org.example.bookservice.dto.request.AuthorSearchRequest;
 import org.example.bookservice.dto.response.AuthorResponse;
 import org.example.bookservice.service.AuthorService;
 import org.springframework.data.domain.Page;
@@ -21,14 +22,9 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @Operation(summary = "Get all authors", description = "Returns a paginated list of authors filtered by optional name, nationality, and email")
-    @GetMapping
-    public ResponseEntity<Page<AuthorResponse>> getAllAuthors(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String nationality,
-            @RequestParam(required = false) String email,
-            Pageable pageable
-    ) {
-        return ResponseEntity.ok(authorService.getAllAuthors(name, nationality, email, pageable));
+    @PostMapping("/search")
+    public ResponseEntity<Page<AuthorResponse>> getAllAuthors(@RequestBody AuthorSearchRequest request) {
+        return ResponseEntity.ok(authorService.getAllAuthors(request));
     }
 
     @Operation(summary = "Create an author", description = "Creates a new author")

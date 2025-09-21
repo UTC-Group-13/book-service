@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.example.bookservice.dto.request.BookRequest;
+import org.example.bookservice.dto.request.BookSearchRequest;
 import org.example.bookservice.dto.response.BookResponse;
 import org.example.bookservice.service.BookService;
 import org.springframework.data.domain.Page;
@@ -22,17 +23,8 @@ public class BookController {
     private final BookService bookService;
 
     @Operation(summary = "Get all books", description = "Returns a paginated and filtered list of all books")
-    @GetMapping
-    public ResponseEntity<Page<BookResponse>> getAllBooks(
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) String isbn,
-            @RequestParam(required = false) Integer publisherId,
-            @RequestParam(required = false) Integer publishYear,
-            @RequestParam(required = false) Integer minPrice,
-            @RequestParam(required = false) Integer maxPrice,
-            @RequestParam(required = false) Set<Integer> categoryIds,
-            @RequestParam(required = false) Set<Integer> authorIds,
-            Pageable pageable) {
+    @PostMapping("/search")
+    public ResponseEntity<Page<BookResponse>> getAllBooks(@RequestBody BookSearchRequest request) {
 
         Page<BookResponse> books = bookService.getAllBooks(title, isbn, publisherId, publishYear, minPrice, maxPrice, categoryIds, authorIds, pageable);
         return ResponseEntity.ok(books);

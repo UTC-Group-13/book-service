@@ -4,12 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.example.bookservice.constant.ErrorCode;
 import org.example.bookservice.dto.exception.BusinessException;
 import org.example.bookservice.dto.request.AuthorRequest;
+import org.example.bookservice.dto.request.AuthorSearchRequest;
 import org.example.bookservice.dto.response.AuthorResponse;
 import org.example.bookservice.entity.Author;
+import org.example.bookservice.mapper.AuthorMapper;
 import org.example.bookservice.repository.AuthorRepository;
 import org.example.bookservice.service.AuthorService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,10 +21,12 @@ public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository authorRepository;
 
+    private final AuthorMapper authorMapper;
+
     @Override
     public AuthorResponse createAuthor(AuthorRequest request) {
         if (authorRepository.existsByFullNameIgnoreCase(request.getFullName())) {
-            throw new BusinessException("AUTHOR_EXISTS","Tác giả đã tồn tại");
+            throw new BusinessException(ErrorCode.AUTHOR_ALREADY_EXISTS.getCode(), ErrorCode.AUTHOR_ALREADY_EXISTS.getMessage());
         }
 
         Author author = Author.builder()
@@ -37,14 +40,14 @@ public class AuthorServiceImpl implements AuthorService {
                 .updatedAt(LocalDateTime.now())
                 .build();
 
-        return toResponse(authorRepository.save(author));
+        return authorMapper.toAuthorResponse(authorRepository.save(author));
     }
 
     @Override
-    public Page<AuthorResponse> getAllAuthors(String name, String nationality, String email, Pageable pageable) {
+    public Page<AuthorResponse> getAllAuthors(AuthorSearchRequest request) {
         return authorRepository
-                .findAllWithFilters(name, nationality, email, pageable)
-                .map(this::toResponse);
+                .findAllWithFilters(request.getFullName(), request.getNationality(), request.getEmail(), request.getPageable())
+                .map(authorMapper::toAuthorResponse);
     }
 
 
@@ -54,7 +57,7 @@ public class AuthorServiceImpl implements AuthorService {
                 .filter(a -> Boolean.FALSE.equals(a.getDeleteFlg()))
                 .orElseThrow(() -> new BusinessException(ErrorCode.AUTHOR_NOT_FOUND.getMessage(),
                         ErrorCode.AUTHOR_NOT_FOUND.getCode()));
-        return toResponse(author);
+        return authorMapper.toAuthorResponse(author);
     }
 
     @Override
@@ -65,7 +68,7 @@ public class AuthorServiceImpl implements AuthorService {
                         ErrorCode.AUTHOR_NOT_FOUND.getCode()));
         author.setUpdatedAt(LocalDateTime.now());
 
-        return toResponse(authorRepository.save(author));
+        return authorMapper.toAuthorResponse(authorRepository.save(author));
     }
 
     @Override
@@ -77,12 +80,5 @@ public class AuthorServiceImpl implements AuthorService {
         author.setDeleteFlg(true); // soft delete
         author.setUpdatedAt(LocalDateTime.now());
         authorRepository.save(author);
-    }
-
-    private AuthorResponse toResponse(Author entity) {
-        AuthorResponse resp = new AuthorResponse();
-        resp.setId(entity.getId());
-        resp.setFullName(entity.getFullName());
-        return resp;
     }
 }

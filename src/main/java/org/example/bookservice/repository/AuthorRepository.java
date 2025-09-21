@@ -13,7 +13,6 @@ public interface AuthorRepository extends JpaRepository<Author, Integer>, JpaSpe
 
     @Query("""
             SELECT a FROM Author a
-                LEFT JOIN a.books b
             WHERE (:name IS NULL OR LOWER(a.fullName) LIKE LOWER(CONCAT('%', :name, '%')))
                 AND (:nationality IS NULL OR LOWER(a.nationality) LIKE LOWER(CONCAT('%', :nationality, '%')))
                 AND (:email IS NULL OR LOWER(a.email) LIKE LOWER(CONCAT('%', :email, '%')))

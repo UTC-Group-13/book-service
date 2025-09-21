@@ -5,7 +5,6 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Entity
 @Table(name = "authors")
@@ -43,8 +42,5 @@ public class Author {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
-
-    @ManyToMany(mappedBy = "authors")
-    private Set<Book> books;
 }
 

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Entity
 @Table(name = "categories")
@@ -33,7 +32,4 @@ public class Category {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
-
-    @ManyToMany(mappedBy = "categories")
-    private Set<Book> books;
 }

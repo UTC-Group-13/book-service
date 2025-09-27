@@ -21,7 +21,7 @@ public class Publisher {
     @Column(nullable = false, length = 255)
     private String name;
 
-    @Lob
+    @Column(name = "description", length = 500)
     private String description;
 
     @Column(name = "delete_flg")

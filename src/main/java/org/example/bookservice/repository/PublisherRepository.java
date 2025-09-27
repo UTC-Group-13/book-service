@@ -15,7 +15,8 @@ public interface PublisherRepository extends JpaRepository<Publisher, Integer> {
     @Query("""
            SELECT p FROM Publisher p
            WHERE p.deleteFlg = false
-             AND (:name IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%')))
+             AND (:search IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :search, '%')))
+             AND (:search IS NULL OR LOWER(p.description) LIKE LOWER(CONCAT('%', :search, '%')))
            """)
-    Page<Publisher> findAllWithFilters(String name, Pageable pageable);
+    Page<Publisher> findAllWithFilters(String search, Pageable pageable);
 }

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.example.bookservice.dto.request.PublisherRequest;
+import org.example.bookservice.dto.request.PublisherSearchRequest;
 import org.example.bookservice.dto.response.PublisherResponse;
 import org.example.bookservice.service.PublisherService;
 import org.springframework.data.domain.Page;
@@ -19,13 +20,12 @@ public class PublisherController {
 
     private final PublisherService publisherService;
 
-    @Operation(summary = "Get all publishers", description = "Returns a paginated list of publishers filtered by optional name")
-    @GetMapping
+    @Operation(summary = "Get all publishers", description = "Returns a paginated list of publishers filtered by optional name, description")
+    @PostMapping("/search")
     public ResponseEntity<Page<PublisherResponse>> getAllPublishers(
-            @RequestParam(required = false) String name,
-            Pageable pageable
+            @RequestBody PublisherSearchRequest request
     ) {
-        return ResponseEntity.ok(publisherService.getAllPublishers(name, pageable));
+        return ResponseEntity.ok(publisherService.getAllPublishers(request));
     }
 
     @Operation(summary = "Create a publisher", description = "Creates a new publisher")

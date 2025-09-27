@@ -21,7 +21,7 @@ public class Category {
     @Column(length = 255, nullable = false, unique = true)
     private String name;
 
-    @Lob
+    @Column(name = "description", length = 500)
     private String description;
 
     @Column(name = "delete_flg")

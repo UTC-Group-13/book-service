@@ -2,13 +2,10 @@ package org.example.bookservice.dto.request;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.data.domain.Pageable;
-
-import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class AuthorSearchRequest extends SearchRequest{
+public class CategorySearchRequest extends SearchRequest{
 
     private String search;
 }

@@ -11,6 +11,9 @@ import org.example.bookservice.mapper.AuthorMapper;
 import org.example.bookservice.repository.AuthorRepository;
 import org.example.bookservice.service.AuthorService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -45,8 +48,18 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Page<AuthorResponse> getAllAuthors(AuthorSearchRequest request) {
+        Sort sort = Sort.unsorted();
+        if (request.getSortBy() != null) {
+            sort = Sort.by(
+                    "DESC".equalsIgnoreCase(request.getSortDir()) ? Sort.Direction.DESC : Sort.Direction.ASC,
+                    request.getSortBy()
+            );
+        }
+
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), sort);
+
         return authorRepository
-                .findAllWithFilters(request.getFullName(), request.getNationality(), request.getEmail(), request.getPageable())
+                .findAllWithFilters(request.getSearch(), pageable)
                 .map(authorMapper::toAuthorResponse);
     }
 

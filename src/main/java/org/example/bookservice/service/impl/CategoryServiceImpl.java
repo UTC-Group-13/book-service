@@ -3,13 +3,16 @@ package org.example.bookservice.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.example.bookservice.dto.request.CategoryRequest;
+import org.example.bookservice.dto.request.CategorySearchRequest;
 import org.example.bookservice.dto.response.CategoryResponse;
 import org.example.bookservice.entity.Category;
 import org.example.bookservice.mapper.CategoryMapper;
 import org.example.bookservice.repository.CategoryRepository;
 import org.example.bookservice.service.CategoryService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -38,9 +41,18 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Page<CategoryResponse> getAllCategories(String name, Pageable pageable) {
+    public Page<CategoryResponse> getAllCategories(CategorySearchRequest request) {
+        Sort sort = Sort.unsorted();
+        if (request.getSortBy() != null) {
+            sort = Sort.by(
+                    "DESC".equalsIgnoreCase(request.getSortDir()) ? Sort.Direction.DESC : Sort.Direction.ASC,
+                    request.getSortBy()
+            );
+        }
+
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), sort);
         return categoryRepository
-                .findAllWithFilters(name, pageable)
+                .findAllWithFilters(request.getSearch(), pageable)
                 .map(categoryMapper::toCategoryResponse);
     }
 

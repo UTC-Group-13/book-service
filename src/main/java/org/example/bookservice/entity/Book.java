@@ -38,7 +38,7 @@ public class Book {
 
     private Integer price = 0;
 
-    @Lob
+    @Column(name = "description", length = 500)
     private String description;
 
     @Column(name = "cover_image")

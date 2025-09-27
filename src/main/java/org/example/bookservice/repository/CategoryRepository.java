@@ -14,10 +14,11 @@ public interface CategoryRepository extends JpaRepository<Category, Integer>, Jp
     @Query("""
             SELECT c FROM Category c
                 WHERE c.deleteFlg = false
-                AND (:name IS NULL OR LOWER(c.name) LIKE LOWER(CONCAT('%', :name, '%')))
+                AND (:search IS NULL OR LOWER(c.name) LIKE LOWER(CONCAT('%', :search, '%')))
+                AND (:search IS NULL OR LOWER(c.description) LIKE LOWER(CONCAT('%', :search, '%')))
             """)
     Page<Category> findAllWithFilters(
-            @Param("name") String name,
+            @Param("search") String search,
             Pageable pageable);
 
 }

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.example.bookservice.dto.request.CategoryRequest;
+import org.example.bookservice.dto.request.CategorySearchRequest;
 import org.example.bookservice.dto.response.CategoryResponse;
 import org.example.bookservice.service.CategoryService;
 import org.springframework.data.domain.Page;
@@ -19,13 +20,12 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @Operation(summary = "Get all categories", description = "Returns a paginated list of categories filtered by optional name")
-    @GetMapping
+    @Operation(summary = "Get all categories", description = "Returns a paginated list of categories filtered by optional name, description")
+    @PostMapping("/search")
     public ResponseEntity<Page<CategoryResponse>> getAllCategories(
-            @RequestParam(required = false) String name,
-            Pageable pageable
+            @RequestBody CategorySearchRequest request
     ) {
-        return ResponseEntity.ok(categoryService.getAllCategories(name, pageable));
+        return ResponseEntity.ok(categoryService.getAllCategories(request));
     }
 
     @Operation(summary = "Create a category", description = "Creates a new category")

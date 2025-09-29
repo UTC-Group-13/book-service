@@ -14,9 +14,9 @@ public interface AuthorRepository extends JpaRepository<Author, Integer>, JpaSpe
     @Query("""
             SELECT a FROM Author a
             WHERE (:search IS NULL OR LOWER(a.fullName) LIKE LOWER(CONCAT('%', :search, '%')))
-                AND (:search IS NULL OR LOWER(a.nationality) LIKE LOWER(CONCAT('%', :search, '%')))
-                AND (:search IS NULL OR LOWER(a.email) LIKE LOWER(CONCAT('%', :search, '%')))
-                AND (:search IS NULL OR LOWER(a.biography) LIKE LOWER(CONCAT('%', :search, '%')))
+                OR (:search IS NULL OR LOWER(a.nationality) LIKE LOWER(CONCAT('%', :search, '%')))
+                OR (:search IS NULL OR LOWER(a.email) LIKE LOWER(CONCAT('%', :search, '%')))
+                OR (:search IS NULL OR LOWER(a.biography) LIKE LOWER(CONCAT('%', :search, '%')))
             """)
     Page<Author> findAllWithFilters(
             @Param("search") String search,

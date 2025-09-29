@@ -15,16 +15,16 @@ public interface BookLoanRepository extends JpaRepository<BookLoan, Integer> {
     @Query("""
         SELECT bl FROM BookLoan bl
         WHERE bl.deleteFlg = false
-          AND (:studentId IS NULL OR bl.student.id = :studentId)
-          AND (:bookId IS NULL OR bl.book.id = :bookId)
-          AND (:adminId IS NULL OR bl.admin.id = :adminId)
-          AND (:status IS NULL OR bl.status = :status)
-          AND (:borrowFrom IS NULL OR bl.borrowDate >= :borrowFrom)
-          AND (:borrowTo IS NULL OR bl.borrowDate <= :borrowTo)
-          AND (:dueFrom IS NULL OR bl.dueDate >= :dueFrom)
-          AND (:dueTo IS NULL OR bl.dueDate <= :dueTo)
-          AND (:onlyNotReturned IS NULL OR (:onlyNotReturned = true AND bl.returnDate IS NULL) OR (:onlyNotReturned = false))
-          AND (:onlyOverdue IS NULL OR (:onlyOverdue = true AND bl.returnDate IS NULL AND bl.dueDate < CURRENT_DATE) OR (:onlyOverdue = false))
+          AND ((:studentId IS NULL OR bl.student.id = :studentId)
+          OR (:bookId IS NULL OR bl.book.id = :bookId)
+          OR (:adminId IS NULL OR bl.admin.id = :adminId)
+          OR (:status IS NULL OR bl.status = :status)
+          OR (:borrowFrom IS NULL OR bl.borrowDate >= :borrowFrom)
+          OR (:borrowTo IS NULL OR bl.borrowDate <= :borrowTo)
+          OR (:dueFrom IS NULL OR bl.dueDate >= :dueFrom)
+          OR (:dueTo IS NULL OR bl.dueDate <= :dueTo)
+          OR (:onlyNotReturned IS NULL OR (:onlyNotReturned = true AND bl.returnDate IS NULL) OR (:onlyNotReturned = false))
+          OR (:onlyOverdue IS NULL OR (:onlyOverdue = true AND bl.returnDate IS NULL AND bl.dueDate < CURRENT_DATE) OR (:onlyOverdue = false)))
         """)
     Page<BookLoan> findAllWithFilters(
             Integer studentId,

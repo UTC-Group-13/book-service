@@ -14,11 +14,11 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
     @Query("""
         SELECT s FROM Student s
         WHERE s.deleteFlg = false
-          AND (:search IS NULL OR LOWER(s.code) LIKE LOWER(CONCAT('%', :search, '%')))
-          AND (:search IS NULL OR LOWER(s.fullName) LIKE LOWER(CONCAT('%', :search, '%')))
-          AND (:search IS NULL OR LOWER(s.email) LIKE LOWER(CONCAT('%', :search, '%')))
-          AND (:search IS NULL OR LOWER(s.departmentCode) LIKE LOWER(CONCAT('%', :search, '%')))
-          AND (:search IS NULL OR LOWER(s.classCode) LIKE LOWER(CONCAT('%', :search, '%')))
+          AND ((:search IS NULL OR LOWER(s.code) LIKE LOWER(CONCAT('%', :search, '%')))
+          OR (:search IS NULL OR LOWER(s.fullName) LIKE LOWER(CONCAT('%', :search, '%')))
+          OR (:search IS NULL OR LOWER(s.email) LIKE LOWER(CONCAT('%', :search, '%')))
+          OR (:search IS NULL OR LOWER(s.departmentCode) LIKE LOWER(CONCAT('%', :search, '%')))
+          OR (:search IS NULL OR LOWER(s.classCode) LIKE LOWER(CONCAT('%', :search, '%'))))
         """)
     Page<Student> findAllWithFilters(
             @Param("search") String search,

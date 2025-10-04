@@ -13,7 +13,7 @@ public interface AuthorRepository extends JpaRepository<Author, Integer>, JpaSpe
 
     @Query("""
             SELECT a FROM Author a
-            WHERE a.deleteFlg = true
+            WHERE a.deleteFlg = false
                AND ((:search IS NULL OR LOWER(a.fullName) LIKE LOWER(CONCAT('%', :search, '%')))
                OR (:search IS NULL OR LOWER(a.nationality) LIKE LOWER(CONCAT('%', :search, '%')))
                OR (:search IS NULL OR LOWER(a.email) LIKE LOWER(CONCAT('%', :search, '%')))

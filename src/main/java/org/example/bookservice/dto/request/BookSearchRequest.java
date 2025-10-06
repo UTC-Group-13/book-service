@@ -6,8 +6,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.Set;
 
 @Data
-public class BookSearchRequest {
+public class BookSearchRequest extends SearchRequest{
 
+    private String search;
     private String title;
     private String isbn;
     private Integer publishYear;
@@ -20,5 +21,4 @@ public class BookSearchRequest {
     private Integer publisherId;
     private Set<Integer> categoryIds;
     private Set<Integer> authorIds;
-    private Pageable pageable;
 }

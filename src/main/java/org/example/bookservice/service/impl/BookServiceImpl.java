@@ -29,8 +29,8 @@ public class BookServiceImpl implements BookService {
     @Override
     public Page<BookResponse> getAllBooks(BookSearchRequest request) {
 
-        return bookRepository.findAllWithFilters(request.getTitle(), request.getIsbn(), request.getPublisherId(), request.getPublishYear(),
-                        request.getMinPrice(), request.getMaxPrice(), request.getCategoryIds(), request.getAuthorIds(), request.getPageable())
+        return bookRepository.findAllWithFilters(request.getSearch(), request.getPublisherId(), request.getPublishYear(),
+                        request.getMinPrice(), request.getMaxPrice(), request.getCategoryIds(), request.getAuthorIds(), request.toPageable())
                 .map(bookMapper::toBookResponse);
     }
 

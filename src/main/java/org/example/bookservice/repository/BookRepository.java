@@ -14,8 +14,8 @@ import java.util.Set;
 public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query("""
             SELECT b FROM Book b
-                LEFT JOIN Category c
-                LEFT JOIN Author a
+                LEFT JOIN BookCategory bc ON b.id = bc.bookId
+                LEFT JOIN BookAuthor ba ON b.id = ba.bookId
             WHERE (
                     (:search IS NULL OR LOWER(b.title) LIKE LOWER(CONCAT('%', :search, '%')))
                     OR (:search IS NULL OR b.isbn = :search)
@@ -24,8 +24,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
                 AND (:publishYear IS NULL OR b.publishYear = :publishYear)
                 AND (:minPrice IS NULL OR b.price >= :minPrice)
                 AND (:maxPrice IS NULL OR b.price <= :maxPrice)
-                AND (:categoryIds IS NULL OR c.id IN (:categoryIds))
-                AND (:authorIds IS NULL OR a.id IN (:authorIds))
+                AND (:categoryIds IS NULL OR bc.categoryId IN (:categoryIds))
+                AND (:authorIds IS NULL OR ba.authorId IN (:authorIds))
             """)
     Page<Book> findAllWithFilters(
             @Param("search") String search,

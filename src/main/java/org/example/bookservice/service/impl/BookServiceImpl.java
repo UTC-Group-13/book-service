@@ -21,7 +21,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookResponse createBook(BookRequest request) {
-        Book book = mapToEntity(request);
+        Book book = bookMapper.toBook(request);
         Book savedBook = bookRepository.save(book);
         return bookMapper.toBookResponse(savedBook);
     }
@@ -69,15 +69,6 @@ public class BookServiceImpl implements BookService {
     public Book findById(Integer id) {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
-    }
-
-    private Book mapToEntity(BookRequest request) {
-        // Map BookRequest DTO to Book entity (populate publisher, categories, etc.)
-        return Book.builder()
-                .title(request.getTitle())
-                .isbn(request.getIsbn())
-                .quantity(request.getQuantity())
-                .build();
     }
 
 }

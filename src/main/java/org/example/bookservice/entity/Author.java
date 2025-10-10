@@ -16,7 +16,12 @@ import java.time.LocalDateTime;
 public class Author {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_seq")
+    @SequenceGenerator(
+            name = "author_seq",
+            sequenceName = "AUTHOR_SEQ",
+            allocationSize = 1
+    )
     private Integer id;
 
     @Column(name = "full_name", nullable = false, length = 255)

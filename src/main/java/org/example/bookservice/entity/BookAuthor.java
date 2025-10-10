@@ -13,7 +13,12 @@ import lombok.*;
 public class BookAuthor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_author_seq")
+    @SequenceGenerator(
+            name = "book_author_seq",
+            sequenceName = "BOOK_AUTHOR_SEQ",
+            allocationSize = 1
+    )
     private Long id;
 
     @Column(name = "book_id", nullable = false)

@@ -17,7 +17,12 @@ import java.time.LocalDateTime;
 public class BookLoan {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_loan_seq")
+    @SequenceGenerator(
+            name = "book_loan_seq",
+            sequenceName = "BOOK_LOAN_SEQ",
+            allocationSize = 1
+    )
     private Integer id;
 
     @ManyToOne

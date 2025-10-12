@@ -7,6 +7,7 @@ import org.example.bookservice.entity.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Set;
 
 public interface BookService {
@@ -21,4 +22,6 @@ public interface BookService {
     void deleteBook(Integer id);
 
     Book findById(Integer id);
+
+    List<Book> findAllByIds(List<Integer> ids);
 }

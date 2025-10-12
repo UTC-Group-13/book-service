@@ -1,26 +1,103 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <head>
     <meta charset="UTF-8">
+    <title>Thông báo mượn sách</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        .container { padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
-        .title { font-size: 20px; font-weight: bold; color: #2c3e50; }
-        .content { margin-top: 10px; font-size: 16px; }
-        .footer { margin-top: 20px; font-size: 12px; color: #888; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+            color: #2c3e50;
+        }
+        .email-wrapper {
+            width: 100%;
+            padding: 40px 0;
+            background-color: #f4f6f8;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        .header {
+            background-color: #3498db;
+            color: #ffffff;
+            padding: 20px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 22px;
+            letter-spacing: 0.5px;
+        }
+        .content {
+            padding: 30px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        .content p {
+            margin: 8px 0;
+        }
+        .book-info {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .book-info p {
+            margin: 6px 0;
+        }
+        .highlight {
+            color: #3498db;
+            font-weight: bold;
+        }
+        .footer {
+            background-color: #f8fafc;
+            color: #6b7280;
+            text-align: center;
+            font-size: 12px;
+            padding: 15px;
+        }
+        .footer p {
+            margin: 4px 0;
+        }
     </style>
 </head>
+
 <body>
-<div class="container">
-    <div class="title">Thông báo mượn sách</div>
-    <div class="content">
-        <p>Xin chào <b th:text="${studentName}"></b>,</p>
-        <p>Bạn vừa mượn cuốn sách: <b th:text="${bookTitle}"></b></p>
-        <p>Ngày mượn: <b th:text="${date}"></b></p>
-        <p>Ngày trả dự kiến: <b th:text="${expirationDate}"></b></p>
-    </div>
-    <div class="footer">
-        <p>Thư này được gửi tự động từ hệ thống thư viện 📚</p>
+<div class="email-wrapper">
+    <div class="container">
+        <div class="header">
+            <h1>📚 Thông báo mượn sách</h1>
+        </div>
+
+        <div class="content">
+            <p>Xin chào <strong th:text="${studentName}"></strong>,</p>
+
+            <p>Bạn vừa mượn thành công cuốn sách sau từ thư viện:</p>
+
+            <div class="book-info">
+                <p>Tựa sách: <span class="highlight" th:text="${bookTitle}"></span></p>
+                <p>Ngày mượn: <span th:text="${date}"></span></p>
+                <p>Ngày trả dự kiến: <span th:text="${expirationDate}"></span></p>
+            </div>
+
+            <p>Vui lòng đảm bảo trả sách đúng hạn để tránh phát sinh phí trễ hạn.</p>
+
+            <p>Chúc bạn đọc sách vui vẻ! 📖</p>
+        </div>
+
+        <div class="footer">
+            <p>Thư này được gửi tự động từ hệ thống thư viện.</p>
+            <p>Vui lòng không trả lời email này.</p>
+            <p>&copy; <span th:text="${libraryName}">Thư viện Đại học Giao thông vận tải</span></p>
+        </div>
     </div>
 </div>
 </body>

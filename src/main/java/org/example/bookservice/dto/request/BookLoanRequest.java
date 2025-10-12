@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 // Payload for creating/updating a loan
 @Data
@@ -19,9 +20,6 @@ public class BookLoanRequest {
 
     @NotNull(message = "bookId là bắt buộc")
     private Integer bookId;
-
-    @NotNull(message = "adminId là bắt buộc")
-    private Integer adminId;
 
     @NotNull(message = "Ngày mượn là bắt buộc")
     private LocalDate borrowDate;

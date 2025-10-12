@@ -1,0 +1,81 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Thông báo sách quá hạn</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+</head>
+<body style="font-family: Arial, Helvetica, sans-serif; margin:0; padding:0; background:#f4f4f4;">
+<table width="100%" cellpadding="0" cellspacing="0" style="padding:20px 0;">
+    <tr>
+        <td align="center">
+            <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff; border-radius:6px; overflow:hidden;">
+                <!-- Header -->
+                <tr>
+                    <td style="background:#2a6f97; color:#fff; padding:18px 24px;">
+                        <h2 style="margin:0; font-size:18px;">Thư viện - Thông báo sách quá hạn</h2>
+                    </td>
+                </tr>
+
+                <!-- Body -->
+                <tr>
+                    <td style="padding:20px 24px; color:#333;">
+                        <p>Xin chào <span th:text="${member.name}"></span>,</p>
+
+                        <p>
+                            Hệ thống ghi nhận bạn có <strong th:text="${#lists.size(loans)}"></strong>
+                            phiếu mượn đã quá hạn tính đến <strong th:text="${today}"></strong>.
+                        </p>
+
+                        <!-- Table sách -->
+                        <table width="100%" cellpadding="6" cellspacing="0" style="border-collapse:collapse; margin-top:10px;">
+                            <thead>
+                            <tr style="background:#f0f0f0; text-align:left;">
+                                <th style="border:1px solid #e0e0e0;">#</th>
+                                <th style="border:1px solid #e0e0e0;">Tiêu đề</th>
+                                <th style="border:1px solid #e0e0e0;">Due date</th>
+                                <th style="border:1px solid #e0e0e0;">Số ngày trễ</th>
+                                <th style="border:1px solid #e0e0e0;">Phạt (VNĐ)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="loan,iterStat : ${loans}">
+                                <td style="border:1px solid #e0e0e0;" th:text="${iterStat.index + 1}">1</td>
+                                <td style="border:1px solid #e0e0e0;" th:text="${loan.bookTitle}"></td>
+                                <td style="border:1px solid #e0e0e0;" th:text="${loan.dueDate}"></td>
+                                <td style="border:1px solid #e0e0e0;" th:text="${loan.daysLate}"></td>
+                                <td style="border:1px solid #e0e0e0;" th:text="${loan.fine}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <p style="margin-top:12px;">
+                            <strong>Tổng phạt hiện tại:</strong> <span th:text="${fineAmount}"></span> VNĐ.
+                        </p>
+
+                        <p>
+                            Vui lòng trả sách càng sớm càng tốt để tránh phát sinh thêm phí.
+                            Nếu bạn đã trả sách rồi, hãy bỏ qua email này hoặc liên hệ thư viện nếu có sai sót.
+                        </p>
+
+                        <p>Trân trọng,<br/>Ban quản lý thư viện</p>
+
+                        <hr style="border:none; border-top:1px solid #eee; margin:18px 0;"/>
+                        <small style="color:#777;">Nếu cần hỗ trợ, liên hệ: <span th:text="${library.email}">library@example.com</span> — SĐT: <span th:text="${library.phone}">0123456789</span></small>
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td style="background:#fafafa; padding:12px 24px; text-align:center; color:#999; font-size:12px;">
+                        © <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2025</span> Thư viện
+                    </td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

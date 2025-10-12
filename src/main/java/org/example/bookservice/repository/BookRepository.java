@@ -36,5 +36,4 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
             @Param("categoryIds") Set<Integer> categoryIds,
             @Param("authorIds") Set<Integer> authorIds,
             Pageable pageable);
-
 }

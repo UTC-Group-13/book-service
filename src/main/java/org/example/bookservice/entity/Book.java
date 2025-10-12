@@ -23,7 +23,7 @@ public class Book {
     )
     private Integer id;
 
-    @Column(length = 255, nullable = false)
+    @Column(nullable = false)
     private String title;
 
     @Column(length = 20, unique = true)

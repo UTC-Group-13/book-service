@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface EmailRepository extends JpaRepository<Email, Integer> {
-    List<Email> findAllByStatus(Integer status);
+    List<Email> findAllByStatus(String status);
 }

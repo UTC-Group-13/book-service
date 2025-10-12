@@ -3,22 +3,29 @@ package org.example.bookservice.schedule;
 import lombok.extern.slf4j.Slf4j;
 import org.example.bookservice.constant.Status;
 import org.example.bookservice.dto.request.SendEmailRequest;
+import org.example.bookservice.entity.Book;
 import org.example.bookservice.entity.Email;
+import org.example.bookservice.service.BookService;
 import org.example.bookservice.service.EmailService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-public class SendEmailScheduleProcess {
+public class SendEmailProcess {
 
     private final EmailService emailService;
+    private final BookService bookService;
 
-    public SendEmailScheduleProcess(EmailService emailService) {
+    public SendEmailProcess(EmailService emailService, BookService bookService) {
         this.emailService = emailService;
+        this.bookService = bookService;
     }
 
     @Scheduled(cron = "0 0/30 * * * ?")
@@ -29,11 +36,12 @@ public class SendEmailScheduleProcess {
             log.info("Không có email gửi thất bại!");
             return;
         }
-        for (Email email : emails) {
 
+        for (Email email : emails) {
             try {
                 SendEmailRequest sendEmailRequest = new SendEmailRequest();
-                sendEmailRequest.setBookId(email.getBookId());
+                // 1 phan tu thoi nen lay tai 0
+                sendEmailRequest.setBookId(Integer.parseInt(email.getBookIds().split(",")[0]));
                 sendEmailRequest.setStudentId(email.getStudentId());
                 sendEmailRequest.setEmailId(email.getId());
                 emailService.sendEmail(sendEmailRequest);

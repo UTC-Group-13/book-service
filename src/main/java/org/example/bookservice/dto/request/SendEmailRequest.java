@@ -1,7 +1,10 @@
 package org.example.bookservice.dto.request;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.example.bookservice.entity.BookLoan;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -9,9 +12,10 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class SendEmailRequest {
-    @NotNull(message = "ID học sinh không được để trống")
     private Integer studentId;
-    @NotNull(message = "ID sách không được để trống")
     private Integer bookId;
     private Integer emailId;
+    private LocalDate dueDate;
+    private List<BookLoan> bookLoans;
+    private Integer bookCount;
 }

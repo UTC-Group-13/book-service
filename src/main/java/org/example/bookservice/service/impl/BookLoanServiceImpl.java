@@ -2,26 +2,30 @@ package org.example.bookservice.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.example.bookservice.dto.exception.BusinessException;
 import org.example.bookservice.dto.request.BookLoanRequest;
+import org.example.bookservice.dto.request.SendEmailRequest;
 import org.example.bookservice.dto.response.BookLoanResponse;
-import org.example.bookservice.entity.Admin;
 import org.example.bookservice.entity.Book;
 import org.example.bookservice.entity.BookLoan;
 import org.example.bookservice.entity.Student;
 import org.example.bookservice.mapper.BookLoanMapper;
-import org.example.bookservice.repository.AdminRepository;
 import org.example.bookservice.repository.BookLoanRepository;
 import org.example.bookservice.repository.BookRepository;
 import org.example.bookservice.repository.StudentRepository;
 import org.example.bookservice.service.BookLoanService;
+import org.example.bookservice.service.EmailService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +35,7 @@ public class BookLoanServiceImpl implements BookLoanService {
     private final BookRepository bookRepository;
     private final StudentRepository studentRepository;
     private final BookLoanMapper bookLoanMapper;
-    private final AdminRepository adminRepository;
+    private final EmailService emailService;
 
     // You may externalize these as config later
     private static final String STATUS_BORROWED = "BORROWED";
@@ -75,11 +79,13 @@ public class BookLoanServiceImpl implements BookLoanService {
         // Validate related refs exist (Student, Admin)
         Student student = studentRepository.findStudentById(request.getStudentId());
         if (student == null) throw new EntityNotFoundException("Student not found");
-        Admin admin = adminRepository.findAdminsById(request.getAdminId());
-        if (admin == null) throw new EntityNotFoundException("Admin not found");
-
-        LocalDateTime now = LocalDateTime.now();
         BookLoan loan = bookLoanMapper.toBookLoan(request);
+
+        SendEmailRequest sendEmailRequest = new SendEmailRequest();
+        sendEmailRequest.setBookId(request.getBookId());
+        sendEmailRequest.setStudentId(request.getStudentId());
+        sendEmailRequest.setDueDate(request.getDueDate());
+        emailService.sendEmail(sendEmailRequest);
 
         return bookLoanMapper.toBookLoanResponse(bookLoanRepository.save(loan));
     }
@@ -98,12 +104,6 @@ public class BookLoanServiceImpl implements BookLoanService {
         BookLoan loan = bookLoanRepository.findById(id)
                 .filter(l -> Boolean.FALSE.equals(l.getDeleteFlg()))
                 .orElseThrow(() -> new EntityNotFoundException("BookLoan not found"));
-
-        if (request.getAdminId() != null) {
-            Admin admin = adminRepository.findAdminsById(request.getAdminId());
-            if (admin == null) throw new EntityNotFoundException("Admin not found");
-            loan.setAdmin(admin);
-        }
         // For simplicity, studentId and bookId are immutable after creation
 
         loan.setUpdatedAt(LocalDateTime.now());
@@ -118,7 +118,7 @@ public class BookLoanServiceImpl implements BookLoanService {
                 .orElseThrow(() -> new EntityNotFoundException("BookLoan not found"));
 
         if (loan.getReturnDate() != null) {
-            throw new IllegalStateException("Loan already returned");
+            throw new BusinessException("Loan already returned", "LOAN_ALREADY_RETURNED");
         }
 
         LocalDate actualReturn = returnDate != null ? returnDate : LocalDate.now();
@@ -140,10 +140,13 @@ public class BookLoanServiceImpl implements BookLoanService {
         loan.setUpdatedAt(LocalDateTime.now());
 
         // Return inventory to the book
-        Book book = loan.getBook();
-        book.setQuantity((book.getQuantity() == null ? 0 : book.getQuantity()) + 1);
-        book.setUpdatedAt(LocalDateTime.now());
-        bookRepository.save(book);
+        Optional<Book> optBook = bookRepository.findById(loan.getBookId());
+        if(optBook.isPresent()){
+            Book book = optBook.get();
+            book.setQuantity((book.getQuantity() == null ? 0 : book.getQuantity()) + 1);
+            book.setUpdatedAt(LocalDateTime.now());
+            bookRepository.save(book);
+        }
 
         return bookLoanMapper.toBookLoanResponse(bookLoanRepository.save(loan));
     }
@@ -158,5 +161,19 @@ public class BookLoanServiceImpl implements BookLoanService {
         loan.setDeleteFlg(true);
         loan.setUpdatedAt(LocalDateTime.now());
         bookLoanRepository.save(loan);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<BookLoan> findExpiredLoans(LocalDate date, List<String> status) {
+        return bookLoanRepository.findExpiredLoans(date, status);
+    }
+
+    @Override
+    public List<BookLoan> saveAll(List<BookLoan> bookLoans) {
+        if(CollectionUtils.isEmpty(bookLoans)){
+            throw new BusinessException("BookLoans is empty", "BOOKLOANS_EMPTY");
+        }
+        return bookLoanRepository.saveAll(bookLoans);
     }
 }

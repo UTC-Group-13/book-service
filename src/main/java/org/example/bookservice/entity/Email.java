@@ -25,7 +25,7 @@ public class Email {
     private Integer studentId;
 
     @Column(name = "book_id")
-    private Integer bookId;
+    private String bookIds;
 
     @CreationTimestamp
     @Column(name = "created_at")
@@ -35,6 +35,6 @@ public class Email {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "status")
-    private Integer status;
+    @Column(name = "status", length = 30)
+    private String status;
 }

@@ -25,17 +25,11 @@ public class BookLoan {
     )
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "student_id", nullable = false)
-    private Student student;
+    @Column(name = "student_id", nullable = false)
+    private Integer studentId;
 
-    @ManyToOne
-    @JoinColumn(name = "book_id", nullable = false)
-    private Book book;
-
-    @ManyToOne
-    @JoinColumn(name = "admin_id", nullable = false)
-    private Admin admin;
+    @Column(name = "book_id", nullable = false)
+    private Integer bookId;
 
     @Column(name = "borrow_date")
     private LocalDate borrowDate = LocalDate.now();
@@ -49,6 +43,7 @@ public class BookLoan {
     @Column(length = 20)
     private String status = "BORROWED";
 
+    @Column(name = "fee", precision = 10, scale = 2)
     private BigDecimal fee = BigDecimal.ZERO;
 
     @Column(name = "delete_flg")
@@ -59,4 +54,7 @@ public class BookLoan {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
+
+    @Column(name = "last_email_sent_date")
+    private LocalDate lastEmailSentDate;
 }

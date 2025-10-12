@@ -4,11 +4,17 @@ import lombok.Getter;
 
 @Getter
 public enum Status {
-    SUCCESS(1), FAILURE(2), PENDING(3);
+    SUCCESS("SUCCESS"),
+    FAILURE("FAILURE"),
+    PENDING("PENDING"),
+    BORROWING("BORROWING"),
+    RETURNED("RETURNED"),
+    LATE("LATE")
+    ;
 
-    private final Integer value;
+    private final String value;
 
-    Status(Integer value) {
+    Status(String value) {
         this.value = value;
     }
 }

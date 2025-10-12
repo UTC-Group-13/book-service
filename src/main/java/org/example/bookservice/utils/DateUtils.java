@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import org.example.bookservice.dto.exception.BusinessException;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -16,5 +17,13 @@ public class DateUtils {
         }
         java.time.format.DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
         return dateTime.format(formatter);
+    }
+
+    public static String convertLocalDateToFormat(LocalDate date, String format) {
+        if(!StringUtils.hasText(format)){
+            throw new BusinessException("Tham số format không được để trống", "FORMAT_NOT_BLANK");
+        }
+        java.time.format.DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        return date.format(formatter);
     }
 }

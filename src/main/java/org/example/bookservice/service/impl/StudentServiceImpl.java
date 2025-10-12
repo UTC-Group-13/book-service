@@ -44,4 +44,5 @@ public class StudentServiceImpl implements StudentService {
                 .orElseThrow(() -> new EntityNotFoundException("Student not found"));
         return studentMapper.toStudentResponse(student);
     }
+
 }

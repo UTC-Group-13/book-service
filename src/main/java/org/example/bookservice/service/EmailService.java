@@ -8,5 +8,7 @@ import java.util.List;
 public interface EmailService {
     void sendEmail(SendEmailRequest sendEmailRequest);
 
-    List<Email> getAllEmailWithStatus(Integer status);
+    void sendEmailExpire(SendEmailRequest sendEmailRequest);
+
+    List<Email> getAllEmailWithStatus(String status);
 }

@@ -29,14 +29,27 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class BookLoanServiceImpl implements BookLoanService {
 
     private final BookLoanRepository bookLoanRepository;
     private final BookRepository bookRepository;
     private final StudentRepository studentRepository;
     private final BookLoanMapper bookLoanMapper;
-    private final @Lazy EmailService emailService;
+    private final EmailService emailService;
+
+    public BookLoanServiceImpl(
+            BookLoanRepository bookLoanRepository,
+            BookRepository bookRepository,
+            StudentRepository studentRepository,
+            BookLoanMapper bookLoanMapper,
+            @Lazy EmailService emailService
+    ) {
+        this.bookLoanRepository = bookLoanRepository;
+        this.bookRepository = bookRepository;
+        this.studentRepository = studentRepository;
+        this.bookLoanMapper = bookLoanMapper;
+        this.emailService = emailService;
+    }
 
     // You may externalize these as config later
     private static final String STATUS_BORROWED = "BORROWED";

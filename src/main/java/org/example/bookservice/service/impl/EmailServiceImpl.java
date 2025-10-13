@@ -33,7 +33,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class EmailServiceImpl implements EmailService {
 
@@ -43,6 +42,22 @@ public class EmailServiceImpl implements EmailService {
     private final @Lazy BookLoanService bookLoanService;
     private final StudentService studentService;
     private final SpringTemplateEngine templateEngine;
+
+    public EmailServiceImpl(
+            JavaMailSender javaMailSender,
+            EmailRepository emailRepository,
+            BookService bookService,
+            @Lazy BookLoanService bookLoanService,
+            StudentService studentService,
+            SpringTemplateEngine templateEngine
+    ) {
+        this.javaMailSender = javaMailSender;
+        this.emailRepository = emailRepository;
+        this.bookService = bookService;
+        this.bookLoanService = bookLoanService;
+        this.studentService = studentService;
+        this.templateEngine = templateEngine;
+    }
 
     @Override
     public void sendEmail(SendEmailRequest sendEmailRequest) {

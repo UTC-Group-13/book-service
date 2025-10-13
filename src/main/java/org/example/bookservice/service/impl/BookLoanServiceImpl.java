@@ -15,6 +15,7 @@ import org.example.bookservice.repository.BookRepository;
 import org.example.bookservice.repository.StudentRepository;
 import org.example.bookservice.service.BookLoanService;
 import org.example.bookservice.service.EmailService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class BookLoanServiceImpl implements BookLoanService {
     private final BookRepository bookRepository;
     private final StudentRepository studentRepository;
     private final BookLoanMapper bookLoanMapper;
-    private final EmailService emailService;
+    private final @Lazy EmailService emailService;
 
     // You may externalize these as config later
     private static final String STATUS_BORROWED = "BORROWED";

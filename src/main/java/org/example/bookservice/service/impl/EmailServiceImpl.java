@@ -18,6 +18,7 @@ import org.example.bookservice.service.BookService;
 import org.example.bookservice.service.EmailService;
 import org.example.bookservice.service.StudentService;
 import org.example.bookservice.utils.DateUtils;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender javaMailSender;
     private final EmailRepository emailRepository;
     private final BookService bookService;
-    private final BookLoanService bookLoanService;
+    private final @Lazy BookLoanService bookLoanService;
     private final StudentService studentService;
     private final SpringTemplateEngine templateEngine;
 

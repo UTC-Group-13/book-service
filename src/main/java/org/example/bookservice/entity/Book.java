@@ -29,9 +29,8 @@ public class Book {
     @Column(length = 20, unique = true)
     private String isbn;
 
-    @ManyToOne
-    @JoinColumn(name = "publisher_id")
-    private Publisher publisher;
+    @Column(name = "publisher_id")
+    private Integer publisherId;
 
     @Column(name = "publish_year")
     private Integer publishYear;

@@ -29,4 +29,6 @@ public class BookLoanRequest {
     private LocalDate dueDate;
 
     private BigDecimal fee = BigDecimal.ZERO;
+
+    private Integer adminId = 1;
 }

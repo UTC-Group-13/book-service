@@ -31,4 +31,6 @@ public class BookLoanRequest {
     private BigDecimal fee = BigDecimal.ZERO;
 
     private Integer adminId = 1;
+
+    private String status = "BORROWED";
 }

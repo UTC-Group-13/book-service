@@ -26,6 +26,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -120,7 +121,9 @@ public class BookLoanServiceImpl implements BookLoanService {
                 .filter(l -> Boolean.FALSE.equals(l.getDeleteFlg()))
                 .orElseThrow(() -> new EntityNotFoundException("BookLoan not found"));
         // For simplicity, studentId and bookId are immutable after creation
-
+        if (Objects.equals(request.getStatus(), STATUS_RETURNED)) {
+            loan.setReturnDate(LocalDate.now());
+        }
         loan.setUpdatedAt(LocalDateTime.now());
         return bookLoanMapper.toBookLoanResponse(bookLoanRepository.save(loan));
     }

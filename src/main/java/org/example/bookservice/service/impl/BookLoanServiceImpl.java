@@ -94,7 +94,8 @@ public class BookLoanServiceImpl implements BookLoanService {
         Student student = studentRepository.findStudentById(request.getStudentId());
         if (student == null) throw new EntityNotFoundException("Student not found");
         BookLoan loan = bookLoanMapper.toBookLoan(request);
-
+        loan.setDeleteFlg(false);
+        loan.setStatus(STATUS_BORROWED);
         SendEmailRequest sendEmailRequest = new SendEmailRequest();
         sendEmailRequest.setBookId(request.getBookId());
         sendEmailRequest.setStudentId(request.getStudentId());

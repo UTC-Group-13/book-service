@@ -57,4 +57,7 @@ public class BookLoan {
 
     @Column(name = "last_email_sent_date")
     private LocalDate lastEmailSentDate;
+
+    @Column(name = "adminId")
+    private Integer adminId;
 }

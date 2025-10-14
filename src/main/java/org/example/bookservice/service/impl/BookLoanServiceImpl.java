@@ -124,6 +124,13 @@ public class BookLoanServiceImpl implements BookLoanService {
         if (Objects.equals(request.getStatus(), STATUS_RETURNED)) {
             loan.setReturnDate(LocalDate.now());
         }
+        loan.setStatus(request.getStatus());
+        loan.setDueDate(request.getDueDate());
+        loan.setFee(request.getFee());
+        loan.setBookId(request.getBookId());
+        loan.setStudentId(request.getStudentId());
+        loan.setBorrowDate(request.getBorrowDate());
+        loan.setFee(request.getFee());
         loan.setUpdatedAt(LocalDateTime.now());
         return bookLoanMapper.toBookLoanResponse(bookLoanRepository.save(loan));
     }

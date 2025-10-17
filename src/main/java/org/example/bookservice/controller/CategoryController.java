@@ -2,6 +2,7 @@ package org.example.bookservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.bookservice.dto.request.CategoryRequest;
 import org.example.bookservice.dto.request.CategorySearchRequest;
@@ -30,7 +31,7 @@ public class CategoryController {
 
     @Operation(summary = "Create a category", description = "Creates a new category")
     @PostMapping
-    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest request) {
+    public ResponseEntity<CategoryResponse> createCategory(@Valid @RequestBody CategoryRequest request) {
         CategoryResponse created = categoryService.createCategory(request);
         return ResponseEntity.status(201).body(created);
     }
@@ -43,7 +44,7 @@ public class CategoryController {
 
     @Operation(summary = "Update a category", description = "Updates details of an existing category")
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Integer id, @RequestBody CategoryRequest request) {
+    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Integer id,@Valid @RequestBody CategoryRequest request) {
         return ResponseEntity.ok(categoryService.updateCategory(id, request));
     }
 

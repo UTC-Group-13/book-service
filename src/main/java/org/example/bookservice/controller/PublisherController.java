@@ -38,19 +38,19 @@ public class PublisherController {
 
     @Operation(summary = "Get a publisher by ID", description = "Fetch details of a single publisher by its ID")
     @GetMapping("/{id}")
-    public ResponseEntity<PublisherResponse> getPublisherById(@PathVariable Integer id) {
+    public ResponseEntity<PublisherResponse> getPublisherById(@PathVariable Long id) {
         return ResponseEntity.ok(publisherService.getPublisherById(id));
     }
 
     @Operation(summary = "Update a publisher", description = "Updates details of an existing publisher")
     @PutMapping("/{id}")
-    public ResponseEntity<PublisherResponse> updatePublisher(@PathVariable Integer id,@Valid @RequestBody PublisherRequest request) {
+    public ResponseEntity<PublisherResponse> updatePublisher(@PathVariable Long id,@Valid @RequestBody PublisherRequest request) {
         return ResponseEntity.ok(publisherService.updatePublisher(id, request));
     }
 
     @Operation(summary = "Delete a publisher", description = "Soft deletes a publisher by its ID")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePublisher(@PathVariable Integer id) {
+    public ResponseEntity<Void> deletePublisher(@PathVariable Long id) {
         publisherService.deletePublisher(id);
         return ResponseEntity.noContent().build();
     }

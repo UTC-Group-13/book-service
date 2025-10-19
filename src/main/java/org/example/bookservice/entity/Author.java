@@ -22,7 +22,7 @@ public class Author {
             sequenceName = "AUTHOR_SEQ",
             allocationSize = 1
     )
-    private Integer id;
+    private Long id;
 
     @Column(name = "full_name", nullable = false, length = 255)
     private String fullName;

@@ -35,7 +35,7 @@ public class BookRequest {
     private String coverImage;
 
     @NotNull(message = "PublisherId không được để trống")
-    private Integer publisherId;
+    private Long publisherId;
 
     @NotNull(message = "CategoryIds không được để trống")
     @Size(min = 1, message = "Cần ít nhất một category")

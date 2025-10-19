@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface AuthorRepository extends JpaRepository<Author, Integer>, JpaSpecificationExecutor<Author> {
+public interface AuthorRepository extends JpaRepository<Author, Long>, JpaSpecificationExecutor<Author> {
     boolean existsByFullNameIgnoreCase(String fullName);
 
     @Query("""

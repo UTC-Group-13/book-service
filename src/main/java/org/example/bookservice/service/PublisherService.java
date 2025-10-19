@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 public interface PublisherService {
     Page<PublisherResponse> getAllPublishers(PublisherSearchRequest request);
     PublisherResponse createPublisher(PublisherRequest request);
-    PublisherResponse getPublisherById(Integer id);
-    PublisherResponse updatePublisher(Integer id, PublisherRequest request);
-    void deletePublisher(Integer id);
+    PublisherResponse getPublisherById(Long id);
+    PublisherResponse updatePublisher(Long id, PublisherRequest request);
+    void deletePublisher(Long id);
 }

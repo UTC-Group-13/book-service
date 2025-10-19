@@ -57,7 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryResponse getCategoryById(Integer id) {
+    public CategoryResponse getCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
                 .filter(c -> Boolean.FALSE.equals(c.getDeleteFlg()))
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
@@ -65,7 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryResponse updateCategory(Integer id, CategoryRequest request) {
+    public CategoryResponse updateCategory(Long id, CategoryRequest request) {
         Category category = categoryRepository.findById(id)
                 .filter(c -> Boolean.FALSE.equals(c.getDeleteFlg()))
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
@@ -78,7 +78,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void deleteCategory(Integer id) {
+    public void deleteCategory(Long id) {
         Category category = categoryRepository.findById(id)
                 .filter(c -> Boolean.FALSE.equals(c.getDeleteFlg()))
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));

@@ -21,7 +21,7 @@ public class Category {
             sequenceName = "CATEGORY_SEQ",
             allocationSize = 1
     )
-    private Integer id;
+    private Long id;
 
     @Column(length = 255, nullable = false, unique = true)
     private String name;

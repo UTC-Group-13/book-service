@@ -35,19 +35,19 @@ public class AuthorController {
 
     @Operation(summary = "Get an author by ID", description = "Fetch details of a single author by its ID")
     @GetMapping("/{id}")
-    public ResponseEntity<AuthorResponse> getAuthorById(@PathVariable Integer id) {
+    public ResponseEntity<AuthorResponse> getAuthorById(@PathVariable Long id) {
         return ResponseEntity.ok(authorService.getAuthorById(id));
     }
 
     @Operation(summary = "Update an author", description = "Updates details of an existing author")
     @PutMapping("/{id}")
-    public ResponseEntity<AuthorResponse> updateAuthor(@PathVariable Integer id, @Valid @RequestBody AuthorRequest request) {
+    public ResponseEntity<AuthorResponse> updateAuthor(@PathVariable Long id, @Valid @RequestBody AuthorRequest request) {
         return ResponseEntity.ok(authorService.updateAuthor(id, request));
     }
 
     @Operation(summary = "Delete an author", description = "Soft deletes an author by its ID")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAuthor(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteAuthor(@PathVariable Long id) {
         authorService.deleteAuthor(id);
         return ResponseEntity.noContent().build();
     }

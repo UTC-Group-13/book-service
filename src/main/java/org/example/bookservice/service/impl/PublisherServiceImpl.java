@@ -62,7 +62,7 @@ public class PublisherServiceImpl implements PublisherService {
     }
 
     @Override
-    public PublisherResponse getPublisherById(Integer id) {
+    public PublisherResponse getPublisherById(Long id) {
         Publisher entity = publisherRepository.findById(id)
                 .filter(p -> Boolean.FALSE.equals(p.getDeleteFlg()))
                 .orElseThrow(() -> new EntityNotFoundException("Publisher not found"));
@@ -70,7 +70,7 @@ public class PublisherServiceImpl implements PublisherService {
     }
 
     @Override
-    public PublisherResponse updatePublisher(Integer id, PublisherRequest request) {
+    public PublisherResponse updatePublisher(Long id, PublisherRequest request) {
         Publisher entity = publisherRepository.findById(id)
                 .filter(p -> Boolean.FALSE.equals(p.getDeleteFlg()))
                 .orElseThrow(() -> new EntityNotFoundException("Publisher not found"));
@@ -95,7 +95,7 @@ public class PublisherServiceImpl implements PublisherService {
     }
 
     @Override
-    public void deletePublisher(Integer id) {
+    public void deletePublisher(Long id) {
         Publisher entity = publisherRepository.findById(id)
                 .filter(p -> Boolean.FALSE.equals(p.getDeleteFlg()))
                 .orElseThrow(() -> new EntityNotFoundException("Publisher not found"));

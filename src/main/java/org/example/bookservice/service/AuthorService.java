@@ -11,10 +11,10 @@ public interface AuthorService {
 
     Page<AuthorResponse> getAllAuthors(AuthorSearchRequest request);
 
-    AuthorResponse getAuthorById(Integer id);
+    AuthorResponse getAuthorById(Long id);
 
-    AuthorResponse updateAuthor(Integer id, AuthorRequest request);
+    AuthorResponse updateAuthor(Long id, AuthorRequest request);
 
-    void deleteAuthor(Integer id);
+    void deleteAuthor(Long id);
 
 }

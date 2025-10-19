@@ -11,9 +11,9 @@ public interface CategoryService {
 
     Page<CategoryResponse> getAllCategories(CategorySearchRequest request);
 
-    CategoryResponse getCategoryById(Integer id);
+    CategoryResponse getCategoryById(Long id);
 
-    CategoryResponse updateCategory(Integer id, CategoryRequest request);
+    CategoryResponse updateCategory(Long id, CategoryRequest request);
 
-    void deleteCategory(Integer id);
+    void deleteCategory(Long id);
 }

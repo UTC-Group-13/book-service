@@ -5,6 +5,8 @@ import org.example.bookservice.dto.response.BookResponse;
 import org.example.bookservice.entity.Book;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring") // để Spring quản lý
 public interface BookMapper {
     BookResponse toBookResponse(Book book);

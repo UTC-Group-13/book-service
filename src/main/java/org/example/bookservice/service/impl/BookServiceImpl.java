@@ -10,6 +10,7 @@ import org.example.bookservice.entity.*;
 import org.example.bookservice.mapper.AuthorMapper;
 import org.example.bookservice.mapper.BookMapper;
 import org.example.bookservice.mapper.CategoryMapper;
+import org.example.bookservice.mapper.PublisherMapper;
 import org.example.bookservice.repository.*;
 import org.example.bookservice.service.BookService;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,8 @@ public class BookServiceImpl implements BookService {
     private final CategoryMapper categoryMapper;
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
+    private final PublisherRepository publisherRepository;
+    private final PublisherMapper publisherMapper;
 
     @Override
     @Transactional
@@ -40,26 +43,41 @@ public class BookServiceImpl implements BookService {
         book.setDeleteFlg(false);
         Book savedBook = bookRepository.save(book);
 
+        Publisher publisher = publisherRepository.findById(request.getPublisherId())
+                .orElseThrow(() -> new RuntimeException("Publisher not found"));
+
+        List<Category> categories = categoryRepository.findAllById(request.getCategoryIds());
+        if (categories.isEmpty()) {
+            throw new IllegalArgumentException("At least one category must be specified");
+        }
+
+        List<Author> authors = authorRepository.findAllById(request.getAuthorIds());
+        if (authors.isEmpty()) {
+            throw new IllegalArgumentException("At least one author must be specified");
+        }
+
         // Create book categories
-        Set<BookCategory> bookCategories = request.getCategoryIds().stream()
-                .map(categoryId -> BookCategory.builder()
+        Set<BookCategory> bookCategories = categories.stream()
+                .map(category -> BookCategory.builder()
                         .bookId(savedBook.getId())
-                        .categoryId(categoryId)
+                        .categoryId(category.getId())
                         .build())
                 .collect(Collectors.toSet());
         bookCategoryRepository.saveAll(bookCategories);
 
         // Create book authors
-        Set<BookAuthor> bookAuthors = request.getAuthorIds().stream()
-                .map(authorId -> BookAuthor.builder()
+        Set<BookAuthor> bookAuthors = authors.stream()
+                .map(author -> BookAuthor.builder()
                         .bookId(savedBook.getId())
-                        .authorId(authorId
-                        )
+                        .authorId(author.getId())
                         .build())
                 .collect(Collectors.toSet());
         bookAuthorRepository.saveAll(bookAuthors);
-
-        return bookMapper.toBookResponse(savedBook);
+        BookResponse response = bookMapper.toBookResponse(savedBook);
+        response.setPublisher(publisherMapper.toPublisherResponse(publisher));
+        response.setAuthors(authorMapper.toResponseList(authors));
+        response.setCategories(categoryMapper.toResponseList(categories));
+        return response;
     }
 
     @Override
@@ -81,8 +99,8 @@ public class BookServiceImpl implements BookService {
 
             // Load categories
             List<BookCategory> bookCategories = bookCategoryRepository.findByBookId(book.getId());
-            List<Integer> categoryIds = bookCategories.stream()
-                    .map(bc -> bc.getCategoryId().intValue())
+            List<Long> categoryIds = bookCategories.stream()
+                    .map(BookCategory::getCategoryId)
                     .collect(Collectors.toList());
 
             if (!categoryIds.isEmpty()) {
@@ -95,8 +113,8 @@ public class BookServiceImpl implements BookService {
 
             // Load authors
             List<BookAuthor> bookAuthors = bookAuthorRepository.findByBookId(book.getId());
-            List<Integer> authorIds = bookAuthors.stream()
-                    .map(ba -> ba.getAuthorId().intValue())
+            List<Long> authorIds = bookAuthors.stream()
+                    .map(BookAuthor::getAuthorId)
                     .collect(Collectors.toList());
 
             if (!authorIds.isEmpty()) {
@@ -106,7 +124,9 @@ public class BookServiceImpl implements BookService {
                         .collect(Collectors.toList());
                 bookResponse.setAuthors(authorResponses);
             }
-
+            Publisher publisher = publisherRepository.findById(book.getPublisherId())
+                    .orElseThrow(() -> new RuntimeException("Publisher not found"));
+            bookResponse.setPublisher(publisherMapper.toPublisherResponse(publisher));
             return bookResponse;
         });
     }
@@ -141,10 +161,11 @@ public class BookServiceImpl implements BookService {
         // Update categories
         bookCategoryRepository.deleteByBookId(existingBook.getId());
         bookCategoryRepository.flush();
-        Set<BookCategory> newCategories = request.getCategoryIds().stream()
-                .map(categoryId -> BookCategory.builder()
+        List<Category> categories = categoryRepository.findAllById(request.getCategoryIds());
+        Set<BookCategory> newCategories = categories.stream()
+                .map(category -> BookCategory.builder()
                         .bookId(existingBook.getId())
-                        .categoryId(categoryId)
+                        .categoryId(category.getId())
                         .build())
                 .collect(Collectors.toSet());
         bookCategoryRepository.saveAll(newCategories);
@@ -152,18 +173,19 @@ public class BookServiceImpl implements BookService {
         // Update authors
         bookAuthorRepository.deleteByBookId(existingBook.getId());
         bookAuthorRepository.flush();
-        Set<BookAuthor> newAuthors = request.getAuthorIds().stream()
-                .map(authorId -> BookAuthor.builder()
+        List<Author> authors = authorRepository.findAllById(request.getAuthorIds());
+        Set<BookAuthor> newAuthors = authors.stream()
+                .map(author -> BookAuthor.builder()
                         .bookId(existingBook.getId())
-                        .authorId(authorId)
+                        .authorId(author.getId())
                         .build())
                 .collect(Collectors.toSet());
         bookAuthorRepository.saveAll(newAuthors);
 
         Book updatedBook = bookRepository.save(existingBook);
         BookResponse response = bookMapper.toBookResponse(updatedBook);
-        response.setCategoryIds(request.getCategoryIds());
-        response.setAuthorIds(request.getAuthorIds());
+        response.setAuthors(authorMapper.toResponseList(authors));
+        response.setCategories(categoryMapper.toResponseList(categories));
         return response;
     }
 

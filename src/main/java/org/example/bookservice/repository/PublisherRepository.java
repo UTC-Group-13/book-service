@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PublisherRepository extends JpaRepository<Publisher, Integer> {
+public interface PublisherRepository extends JpaRepository<Publisher, Long> {
 
     boolean existsByNameIgnoreCase(String name);
 

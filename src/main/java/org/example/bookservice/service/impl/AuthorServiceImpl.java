@@ -65,7 +65,7 @@ public class AuthorServiceImpl implements AuthorService {
 
 
     @Override
-    public AuthorResponse getAuthorById(Integer id) {
+    public AuthorResponse getAuthorById(Long id) {
         Author author = authorRepository.findById(id)
                 .filter(a -> Boolean.FALSE.equals(a.getDeleteFlg()))
                 .orElseThrow(() -> new BusinessException(ErrorCode.AUTHOR_NOT_FOUND.getMessage(),
@@ -74,7 +74,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public AuthorResponse updateAuthor(Integer id, AuthorRequest request) {
+    public AuthorResponse updateAuthor(Long id, AuthorRequest request) {
         Author author = authorRepository.findById(id)
                 .filter(a -> Boolean.FALSE.equals(a.getDeleteFlg()))
                 .orElseThrow(() -> new BusinessException(ErrorCode.AUTHOR_NOT_FOUND.getMessage(),
@@ -85,7 +85,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void deleteAuthor(Integer id) {
+    public void deleteAuthor(Long id) {
         Author author = authorRepository.findById(id)
                 .filter(a -> Boolean.FALSE.equals(a.getDeleteFlg()))
                 .orElseThrow(() -> new BusinessException(ErrorCode.AUTHOR_NOT_FOUND.getMessage(),

@@ -24,6 +24,4 @@ public class BookResponse {
     private PublisherResponse publisher; // Custom DTO for publisher
     private List<CategoryResponse> categories;
     private List<AuthorResponse> authors;
-    private Set<Long> categoryIds; // Custom DTOs for categories
-    private Set<Long> authorIds; // Custom DTOs for authors
 }

@@ -19,10 +19,10 @@ import java.time.LocalDateTime;
 public class Email {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "student_id")
-    private Integer studentId;
+    private Long studentId;
 
     @Column(name = "book_id")
     private String bookIds;

@@ -41,7 +41,7 @@ public class SendEmailProcess {
             try {
                 SendEmailRequest sendEmailRequest = new SendEmailRequest();
                 // 1 phan tu thoi nen lay tai 0
-                sendEmailRequest.setBookId(Integer.parseInt(email.getBookIds().split(",")[0]));
+                sendEmailRequest.setBookId(Long.parseLong(email.getBookIds().split(",")[0]));
                 sendEmailRequest.setStudentId(email.getStudentId());
                 sendEmailRequest.setEmailId(email.getId());
                 emailService.sendEmail(sendEmailRequest);

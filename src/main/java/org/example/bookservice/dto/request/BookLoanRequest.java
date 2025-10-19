@@ -17,10 +17,10 @@ import java.time.LocalDateTime;
 @Builder
 public class BookLoanRequest {
     @NotNull(message = "studentId là bắt buộc")
-    private Integer studentId;
+    private Long studentId;
 
     @NotNull(message = "bookId là bắt buộc")
-    private Integer bookId;
+    private Long bookId;
 
     @NotNull(message = "Ngày mượn là bắt buộc")
     private LocalDate borrowDate;
@@ -30,7 +30,7 @@ public class BookLoanRequest {
 
     private BigDecimal fee = BigDecimal.ZERO;
 
-    private Integer adminId = 1;
+    private Long adminId = 1L;
 
     private String status = "BORROWED";
 }

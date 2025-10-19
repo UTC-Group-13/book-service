@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Integer> {
+public interface StudentRepository extends JpaRepository<Student, Long> {
 
     @Query("""
         SELECT s FROM Student s
@@ -25,5 +25,5 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
             Pageable pageable
     );
 
-    Student findStudentById(Integer id);
+    Student findStudentById(Long id);
 }

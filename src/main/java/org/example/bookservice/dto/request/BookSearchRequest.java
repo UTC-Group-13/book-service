@@ -1,6 +1,8 @@
 package org.example.bookservice.dto.request;
 
 import lombok.Data;
+import org.example.bookservice.dto.response.AuthorResponse;
+import org.example.bookservice.dto.response.CategoryResponse;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Set;
@@ -19,6 +21,6 @@ public class BookSearchRequest extends SearchRequest{
     private String description;
     private String coverImage;
     private Integer publisherId;
-    private Set<Integer> categoryIds;
-    private Set<Integer> authorIds;
+    private Set<Long> categoryIds;
+    private Set<Long> authorIds;
 }

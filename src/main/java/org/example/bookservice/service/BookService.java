@@ -15,13 +15,13 @@ public interface BookService {
 
     Page<BookResponse> getAllBooks(BookSearchRequest request);
 
-    BookResponse getBookById(Integer id);
+    BookResponse getBookById(Long id);
 
-    BookResponse updateBook(Integer id, BookRequest bookRequest);
+    BookResponse updateBook(Long id, BookRequest bookRequest);
 
-    void deleteBook(Integer id);
+    void deleteBook(Long id);
 
-    Book findById(Integer id);
+    Book findById(Long id);
 
-    List<Book> findAllByIds(List<Integer> ids);
+    List<Book> findAllByIds(List<Long> ids);
 }

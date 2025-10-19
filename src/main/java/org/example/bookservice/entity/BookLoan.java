@@ -23,13 +23,13 @@ public class BookLoan {
             sequenceName = "BOOK_LOAN_SEQ",
             allocationSize = 1
     )
-    private Integer id;
+    private Long id;
 
     @Column(name = "student_id", nullable = false)
-    private Integer studentId;
+    private Long studentId;
 
     @Column(name = "book_id", nullable = false)
-    private Integer bookId;
+    private Long bookId;
 
     @Column(name = "borrow_date")
     private LocalDate borrowDate = LocalDate.now();
@@ -59,5 +59,5 @@ public class BookLoan {
     private LocalDate lastEmailSentDate;
 
     @Column(name = "adminId")
-    private Integer adminId;
+    private Long adminId;
 }

@@ -111,16 +111,16 @@ public class EmailServiceImpl implements EmailService {
             log.warn("Không có phiếu mượn nào để gửi email quá hạn.");
             return;
         }
-        List<Integer> lstBookIds = bookLoans.stream().map(BookLoan::getBookId).toList();
+        List<Long> lstBookIds = bookLoans.stream().map(BookLoan::getBookId).toList();
         List<Book> lstBook = bookService.findAllByIds(lstBookIds);
         try {
             StudentResponse studentResponse = new StudentResponse();
-            Map<Integer, List<BookLoan>> loansByStudent = bookLoans.stream()
+            Map<Long, List<BookLoan>> loansByStudent = bookLoans.stream()
                     .filter(loan -> loan.getReturnDate() == null)
                     .collect(Collectors.groupingBy(BookLoan::getStudentId));
             List<BookLoan> lstBkLoan = new ArrayList<>();
-            for (Map.Entry<Integer, List<BookLoan>> entry : loansByStudent.entrySet()) {
-                Integer studentId = entry.getKey();
+            for (Map.Entry<Long, List<BookLoan>> entry : loansByStudent.entrySet()) {
+                Long studentId = entry.getKey();
                 List<BookLoan> loansOfStudent = entry.getValue();
                 studentResponse = studentService.getStudentById(studentId);
 

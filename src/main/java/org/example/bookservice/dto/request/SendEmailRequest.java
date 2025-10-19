@@ -12,9 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class SendEmailRequest {
-    private Integer studentId;
-    private Integer bookId;
-    private Integer emailId;
+    private Long studentId;
+    private Long bookId;
+    private Long emailId;
     private LocalDate dueDate;
     private List<BookLoan> bookLoans;
     private Integer bookCount;

@@ -38,7 +38,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentResponse getStudentById(Integer id) {
+    public StudentResponse getStudentById(Long id) {
         Student student = studentRepository.findById(id)
                 .filter(s -> Boolean.FALSE.equals(s.getDeleteFlg()))
                 .orElseThrow(() -> new EntityNotFoundException("Student not found"));

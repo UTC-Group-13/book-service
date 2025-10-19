@@ -3,6 +3,7 @@ package org.example.bookservice.dto.response;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -21,6 +22,8 @@ public class BookResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private PublisherResponse publisher; // Custom DTO for publisher
-    private Set<Integer> categoryIds; // Custom DTOs for categories
-    private Set<Integer> authorIds; // Custom DTOs for authors
+    private List<CategoryResponse> categories;
+    private List<AuthorResponse> authors;
+    private Set<Long> categoryIds; // Custom DTOs for categories
+    private Set<Long> authorIds; // Custom DTOs for authors
 }

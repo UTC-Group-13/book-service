@@ -9,5 +9,5 @@ public interface StudentService {
 
     Page<StudentResponse> getAllStudents(StudentSearchRequest request);
 
-    StudentResponse getStudentById(Integer id);
+    StudentResponse getStudentById(Long id);
 }

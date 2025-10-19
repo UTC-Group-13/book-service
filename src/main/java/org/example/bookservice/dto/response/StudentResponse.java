@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class StudentResponse {
-    private Integer id;
+    private Long id;
     private String code;
     private String fullName;
     private String email;

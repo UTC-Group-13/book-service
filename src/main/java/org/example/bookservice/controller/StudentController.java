@@ -28,7 +28,7 @@ public class StudentController {
 
     @Operation(summary = "Get a student by ID", description = "Fetch details of a single student by ID")
     @GetMapping("/{id}")
-    public ResponseEntity<StudentResponse> getStudentById(@PathVariable Integer id) {
+    public ResponseEntity<StudentResponse> getStudentById(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.getStudentById(id));
     }
 }

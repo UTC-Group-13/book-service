@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, Integer> {
+public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("""
             SELECT b FROM Book b
             WHERE
@@ -42,8 +42,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
             @Param("publishYear") Integer publishYear,
             @Param("minPrice") Integer minPrice,
             @Param("maxPrice") Integer maxPrice,
-            @Param("categoryIds") Set<Integer> categoryIds,
-            @Param("authorIds") Set<Integer> authorIds,
+            @Param("categoryIds") Set<Long> categoryIds,
+            @Param("authorIds") Set<Long> authorIds,
             Pageable pageable
     );
 

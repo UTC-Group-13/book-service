@@ -5,5 +5,6 @@ import lombok.Data;
 @Data
 public class CategoryResponse {
     private Integer id;
-    private String name; // Assuming a simple attribute 'name' exists in Category
+    private String name;
+    private String description;
 }

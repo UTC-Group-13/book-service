@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.bookservice.repository.StudentRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,9 +15,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class BookLoanResponse {
-    private Integer id;
-    private Integer studentId;
-    private Integer bookId;
+    private Long id;
+    private StudentResponse student;
+    private BookResponse book;
     private Integer adminId;
 
     private LocalDate borrowDate;

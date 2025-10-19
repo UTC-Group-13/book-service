@@ -90,9 +90,7 @@ public class BookLoanServiceImpl implements BookLoanService {
         List<Student> students = studentRepository.findAllById(studentIds);
         Map<Long, Student> studentMap = students.stream()
                 .collect(Collectors.toMap(Student::getId, student -> student));
-        for (BookLoan bookLoan : bookLoanPage.getContent()) {
 
-        }
         return bookLoanPage.map(bookLoan -> {
             BookLoanResponse response = bookLoanMapper.toBookLoanResponse(bookLoan);
 
@@ -124,7 +122,6 @@ public class BookLoanServiceImpl implements BookLoanService {
             throw new IllegalStateException("Book is out of stock");
         }
         book.setQuantity(book.getQuantity() - 1);
-        book.setUpdatedAt(LocalDateTime.now());
         bookRepository.save(book);
 
         // Validate related refs exist (Student, Admin)
@@ -167,7 +164,6 @@ public class BookLoanServiceImpl implements BookLoanService {
         loan.setStudentId(request.getStudentId());
         loan.setBorrowDate(request.getBorrowDate());
         loan.setFee(request.getFee());
-        loan.setUpdatedAt(LocalDateTime.now());
         return bookLoanMapper.toBookLoanResponse(bookLoanRepository.save(loan));
     }
 
@@ -198,14 +194,12 @@ public class BookLoanServiceImpl implements BookLoanService {
         loan.setReturnDate(actualReturn);
         loan.setStatus(STATUS_RETURNED);
         loan.setFee(fee);
-        loan.setUpdatedAt(LocalDateTime.now());
 
         // Return inventory to the book
         Optional<Book> optBook = bookRepository.findById(loan.getBookId());
         if (optBook.isPresent()) {
             Book book = optBook.get();
             book.setQuantity((book.getQuantity() == null ? 0 : book.getQuantity()) + 1);
-            book.setUpdatedAt(LocalDateTime.now());
             bookRepository.save(book);
         }
 
@@ -220,7 +214,6 @@ public class BookLoanServiceImpl implements BookLoanService {
                 .orElseThrow(() -> new EntityNotFoundException("BookLoan not found"));
 
         loan.setDeleteFlg(true);
-        loan.setUpdatedAt(LocalDateTime.now());
         bookLoanRepository.save(loan);
     }
 

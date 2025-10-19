@@ -49,13 +49,10 @@ public class PublisherServiceImpl implements PublisherService {
             throw new IllegalArgumentException("Publisher name already exists");
         }
 
-        LocalDateTime now = LocalDateTime.now();
         Publisher entity = Publisher.builder()
                 .name(request.getName().trim())
                 .description(request.getDescription())
                 .deleteFlg(false)
-                .createdAt(now)
-                .updatedAt(now)
                 .build();
 
         return publisherMapper.toPublisherResponse(publisherRepository.save(entity));
@@ -90,7 +87,6 @@ public class PublisherServiceImpl implements PublisherService {
             entity.setDescription(request.getDescription());
         }
 
-        entity.setUpdatedAt(LocalDateTime.now());
         return publisherMapper.toPublisherResponse(publisherRepository.save(entity));
     }
 
@@ -101,7 +97,6 @@ public class PublisherServiceImpl implements PublisherService {
                 .orElseThrow(() -> new EntityNotFoundException("Publisher not found"));
 
         entity.setDeleteFlg(true); // soft delete
-        entity.setUpdatedAt(LocalDateTime.now());
         publisherRepository.save(entity);
     }
 }

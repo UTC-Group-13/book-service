@@ -39,8 +39,6 @@ public class AuthorServiceImpl implements AuthorService {
                 .biography(request.getBiography())
                 .email(request.getEmail())
                 .deleteFlg(false)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
 
         return authorMapper.toAuthorResponse(authorRepository.save(author));
@@ -79,7 +77,6 @@ public class AuthorServiceImpl implements AuthorService {
                 .filter(a -> Boolean.FALSE.equals(a.getDeleteFlg()))
                 .orElseThrow(() -> new BusinessException(ErrorCode.AUTHOR_NOT_FOUND.getMessage(),
                         ErrorCode.AUTHOR_NOT_FOUND.getCode()));
-        author.setUpdatedAt(LocalDateTime.now());
 
         return authorMapper.toAuthorResponse(authorRepository.save(author));
     }
@@ -91,7 +88,6 @@ public class AuthorServiceImpl implements AuthorService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.AUTHOR_NOT_FOUND.getMessage(),
                         ErrorCode.AUTHOR_NOT_FOUND.getCode()));
         author.setDeleteFlg(true); // soft delete
-        author.setUpdatedAt(LocalDateTime.now());
         authorRepository.save(author);
     }
 }

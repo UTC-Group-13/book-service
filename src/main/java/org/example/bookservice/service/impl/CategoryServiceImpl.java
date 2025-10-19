@@ -34,8 +34,6 @@ public class CategoryServiceImpl implements CategoryService {
                 .name(request.getName())
                 .description(request.getDescription())
                 .deleteFlg(false)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
                 .build();
         return categoryMapper.toCategoryResponse(categoryRepository.save(category));
     }
@@ -72,7 +70,6 @@ public class CategoryServiceImpl implements CategoryService {
 
         if (request.getName() != null) category.setName(request.getName());
         if (request.getDescription() != null) category.setDescription(request.getDescription());
-        category.setUpdatedAt(LocalDateTime.now());
 
         return categoryMapper.toCategoryResponse(categoryRepository.save(category));
     }
@@ -83,7 +80,6 @@ public class CategoryServiceImpl implements CategoryService {
                 .filter(c -> Boolean.FALSE.equals(c.getDeleteFlg()))
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
         category.setDeleteFlg(true); // soft delete
-        category.setUpdatedAt(LocalDateTime.now());
         categoryRepository.save(category);
     }
 }

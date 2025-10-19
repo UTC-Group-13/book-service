@@ -50,14 +50,26 @@ public class BookLoan {
     private Boolean deleteFlg = false;
 
     @Column(name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
     @Column(name = "last_email_sent_date")
     private LocalDate lastEmailSentDate;
 
     @Column(name = "adminId")
     private Long adminId;
+
+    // === Hook tự động set giá trị ===
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }

@@ -9,11 +9,8 @@ import org.example.bookservice.dto.request.BookSearchRequest;
 import org.example.bookservice.dto.response.BookResponse;
 import org.example.bookservice.service.BookService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/books")
@@ -48,7 +45,7 @@ public class BookController {
 
     @Operation(summary = "Update a book", description = "Updates details of an existing book by its ID")
     @PutMapping("/{id}")
-    public ResponseEntity<BookResponse> updateBook(@Valid @PathVariable Integer id, @RequestBody BookRequest bookRequest) {
+    public ResponseEntity<BookResponse> updateBook(@PathVariable Integer id, @Valid @RequestBody BookRequest bookRequest) {
         BookResponse updatedBook = bookService.updateBook(id, bookRequest);
         return ResponseEntity.ok(updatedBook);
     }

@@ -21,7 +21,7 @@ public class Book {
             sequenceName = "BOOK_SEQ",
             allocationSize = 1
     )
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false)
     private String title;

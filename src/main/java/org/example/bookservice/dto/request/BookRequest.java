@@ -39,9 +39,9 @@ public class BookRequest {
 
     @NotNull(message = "CategoryIds không được để trống")
     @Size(min = 1, message = "Cần ít nhất một category")
-    private Set<Integer> categoryIds;
+    private Set<Long> categoryIds;
 
     @NotNull(message = "AuthorIds không được để trống")
     @Size(min = 1, message = "Cần ít nhất một author")
-    private Set<Integer> authorIds;
+    private Set<Long> authorIds;
 }

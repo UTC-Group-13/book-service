@@ -2,6 +2,7 @@ package org.example.bookservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.example.bookservice.dto.request.PublisherRequest;
 import org.example.bookservice.dto.request.PublisherSearchRequest;
@@ -30,7 +31,7 @@ public class PublisherController {
 
     @Operation(summary = "Create a publisher", description = "Creates a new publisher")
     @PostMapping
-    public ResponseEntity<PublisherResponse> createPublisher(@RequestBody PublisherRequest request) {
+    public ResponseEntity<PublisherResponse> createPublisher(@Valid @RequestBody PublisherRequest request) {
         PublisherResponse created = publisherService.createPublisher(request);
         return ResponseEntity.status(201).body(created);
     }
@@ -43,7 +44,7 @@ public class PublisherController {
 
     @Operation(summary = "Update a publisher", description = "Updates details of an existing publisher")
     @PutMapping("/{id}")
-    public ResponseEntity<PublisherResponse> updatePublisher(@PathVariable Integer id, @RequestBody PublisherRequest request) {
+    public ResponseEntity<PublisherResponse> updatePublisher(@PathVariable Integer id,@Valid @RequestBody PublisherRequest request) {
         return ResponseEntity.ok(publisherService.updatePublisher(id, request));
     }
 

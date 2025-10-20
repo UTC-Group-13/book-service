@@ -12,7 +12,8 @@ public enum ErrorCode {
     INVALID_IMAGE_TYPE("Không đúng với loại ảnh", "INVALID_IMAGE_TYPE"),
     IMAGE_NOT_FOUND("Không tìm thấy ảnh", "IMAGE_NOT_FOUND"),
     FILE_STORAGE_ERROR("Lỗi lưu trữ file", "FILE_STORAGE_ERROR"),
-    SEND_EMAIL_ERROR("Gửi email thất bại", "SEND_EMAIL_ERROR")
+    SEND_EMAIL_ERROR("Gửi email thất bại", "SEND_EMAIL_ERROR"),
+    ADMIN_ALREADY_EXISTS("Tài khoản quản trị đã tồn tại", "ADMIN_ALREADY_EXISTS"),
     ;
 
     private final String message;

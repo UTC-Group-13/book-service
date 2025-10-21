@@ -15,7 +15,12 @@ import java.time.LocalDateTime;
 public class Admin {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "admin_seq")
+    @SequenceGenerator(
+            name = "admin_seq",
+            sequenceName = "ADMIN_SEQ",
+            allocationSize = 1
+    )
     private Integer id;
 
     @Column(length = 50, nullable = false, unique = true)

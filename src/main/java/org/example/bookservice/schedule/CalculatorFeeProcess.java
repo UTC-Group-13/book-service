@@ -21,7 +21,8 @@ import java.util.List;
 public class CalculatorFeeProcess {
     private final BookLoanRepository bookLoanRepository;
     private final BookService bookService;
-    @Scheduled(cron = "0 0 7 * * ?")
+//    @Scheduled(cron = "0 0 7 * * ?")
+    @Scheduled(cron = "0 * * * * ?")
     private void process(){
         log.info("========= Bắt đầu tiến trình tính phí trễ hạn =========");
         List<BookLoan> bookLoans = bookLoanRepository.findExpiredLoans(LocalDate.now(), List.of(Status.BORROWING.getValue(), Status.LATE.getValue()));

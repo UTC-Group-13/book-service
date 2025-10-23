@@ -1,6 +1,7 @@
 package org.example.bookservice.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.example.bookservice.constant.Status;
 import org.example.bookservice.dto.exception.BusinessException;
 import org.example.bookservice.dto.request.BookLoanRequest;
 import org.example.bookservice.dto.request.SendEmailRequest;
@@ -57,8 +58,6 @@ public class BookLoanServiceImpl implements BookLoanService {
     }
 
     // You may externalize these as config later
-    private static final String STATUS_BORROWED = "BORROWED";
-    private static final String STATUS_RETURNED = "RETURNED";
     private static final BigDecimal DAILY_LATE_FEE = BigDecimal.ONE; // 1 unit per day overdue
 
     @Override
@@ -129,7 +128,7 @@ public class BookLoanServiceImpl implements BookLoanService {
         if (student == null) throw new EntityNotFoundException("Student not found");
         BookLoan loan = bookLoanMapper.toBookLoan(request);
         loan.setDeleteFlg(false);
-        loan.setStatus(STATUS_BORROWED);
+        loan.setStatus(Status.BORROWING.getValue());
         SendEmailRequest sendEmailRequest = new SendEmailRequest();
         sendEmailRequest.setBookId(request.getBookId());
         sendEmailRequest.setStudentId(request.getStudentId());
@@ -154,7 +153,7 @@ public class BookLoanServiceImpl implements BookLoanService {
                 .filter(l -> Boolean.FALSE.equals(l.getDeleteFlg()))
                 .orElseThrow(() -> new EntityNotFoundException("BookLoan not found"));
         // For simplicity, studentId and bookId are immutable after creation
-        if (Objects.equals(request.getStatus(), STATUS_RETURNED)) {
+        if (Objects.equals(request.getStatus(), Status.RETURNED.getValue())) {
             loan.setReturnDate(LocalDate.now());
         }
         loan.setStatus(request.getStatus());
@@ -192,7 +191,7 @@ public class BookLoanServiceImpl implements BookLoanService {
             }
         }
         loan.setReturnDate(actualReturn);
-        loan.setStatus(STATUS_RETURNED);
+        loan.setStatus(Status.RETURNED.getValue());
         loan.setFee(fee);
 
         // Return inventory to the book

@@ -41,7 +41,7 @@ public class BookLoan {
     private LocalDate returnDate;
 
     @Column(length = 20)
-    private String status = "BORROWED";
+    private String status = "BORROWING";
 
     @Column(name = "fee", precision = 10, scale = 2)
     private BigDecimal fee = BigDecimal.ZERO;

@@ -32,5 +32,5 @@ public class BookLoanRequest {
 
     private Long adminId = 1L;
 
-    private String status = "BORROWED";
+    private String status = "BORROWING";
 }

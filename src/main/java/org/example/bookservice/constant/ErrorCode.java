@@ -14,6 +14,9 @@ public enum ErrorCode {
     FILE_STORAGE_ERROR("Lỗi lưu trữ file", "FILE_STORAGE_ERROR"),
     SEND_EMAIL_ERROR("Gửi email thất bại", "SEND_EMAIL_ERROR"),
     ADMIN_ALREADY_EXISTS("Tài khoản quản trị đã tồn tại", "ADMIN_ALREADY_EXISTS"),
+    ADMIN_NOT_EXISTS("Tài khoản quản trị không tồn tại", "ADMIN_NOT_EXISTS"),
+    TOKEN_NOT_FOUND("Token không hợp lệ", "TOKEN_NOT_FOUND"),
+    TOKEN_EXPIRED("Token quá hạn", "TOKEN_EXPIRED"),
     ;
 
     private final String message;

@@ -5,6 +5,7 @@ import org.example.bookservice.constant.ErrorCode;
 import org.example.bookservice.dto.exception.BusinessException;
 import org.example.bookservice.dto.request.RegisterRequest;
 import org.example.bookservice.dto.response.AdminResponse;
+import org.example.bookservice.dto.response.AuthInfoResponse;
 import org.example.bookservice.entity.Admin;
 import org.example.bookservice.mapper.AdminMapper;
 import org.example.bookservice.repository.AdminRepository;
@@ -34,5 +35,12 @@ public class AdminServiceImpl implements AdminService {
                 .build();
 
         return adminMapper.toAdminResponse(adminRepository.save(admin));
+    }
+
+    @Override
+    public AuthInfoResponse getInfo(String username) {
+        Admin admin = adminRepository.findByUsername(username)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ADMIN_NOT_EXISTS.getCode(), ErrorCode.ADMIN_NOT_EXISTS.getMessage()));
+        return adminMapper.toAuthInfoResponse(admin);
     }
 }

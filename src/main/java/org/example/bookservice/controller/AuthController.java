@@ -2,11 +2,15 @@ package org.example.bookservice.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.example.bookservice.configuration.JwtUtils;
+import org.example.bookservice.constant.ErrorCode;
+import org.example.bookservice.dto.exception.BusinessException;
 import org.example.bookservice.dto.request.LoginRequest;
 import org.example.bookservice.dto.request.RegisterRequest;
 import org.example.bookservice.dto.response.AdminResponse;
+import org.example.bookservice.dto.response.AuthInfoResponse;
 import org.example.bookservice.dto.response.AuthResponse;
 import org.example.bookservice.service.AdminService;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +22,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@Tag(name = "Admin API", description = "Manage admin")
+@Tag(name = "Auth API", description = "Manage auth")
 public class AuthController {
 
     private final AdminService adminService;
-    private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
 

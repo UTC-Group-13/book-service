@@ -10,6 +10,7 @@ import org.example.bookservice.dto.exception.BusinessException;
 import org.example.bookservice.dto.response.AuthInfoResponse;
 import org.example.bookservice.service.AdminService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +25,7 @@ public class AdminController {
     private final JwtUtils jwtUtils;
 
     @Operation(summary = "Get info", description = "Info")
-    @PostMapping("/info")
+    @GetMapping("/info")
     public ResponseEntity<AuthInfoResponse> getInfo(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {

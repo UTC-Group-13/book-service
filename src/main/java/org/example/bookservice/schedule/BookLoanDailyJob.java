@@ -13,8 +13,8 @@ public class BookLoanDailyJob {
     private final BookLoanReportServiceImpl reportService;
 
     // Chạy 01:00 sáng mỗi ngày
-    @Scheduled(cron = "0 * * * * ?")
-//    @Scheduled(cron = "0 0 1 * * ?")
+//    @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(cron = "0 0 1 * * ?")
     public void runDailyReportJob() {
         log.info("==== BẮT ĐẦU JOB THỐNG KÊ MƯỢN TRẢ ====");
         reportService.generateDailyReport();

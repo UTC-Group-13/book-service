@@ -1,5 +1,6 @@
 package org.example.bookservice.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.bookservice.entity.BookLoan;
@@ -18,6 +19,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class BookLoanReportServiceImpl implements BookLoanReportService {
     private final BookLoanRepository bookLoanRepository;
     private final BookLoanReportRepository reportRepository;

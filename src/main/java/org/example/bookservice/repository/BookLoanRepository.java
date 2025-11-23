@@ -26,6 +26,7 @@ public interface BookLoanRepository extends JpaRepository<BookLoan, Integer> {
           OR (:dueTo IS NULL OR bl.dueDate <= :dueTo)
           OR (:onlyNotReturned IS NULL OR (:onlyNotReturned = true AND bl.returnDate IS NULL) OR (:onlyNotReturned = false))
           OR (:onlyOverdue IS NULL OR (:onlyOverdue = true AND bl.returnDate IS NULL AND bl.dueDate < CURRENT_DATE) OR (:onlyOverdue = false)))
+        ORDER BY bl.id DESC
         """)
     Page<BookLoan> findAllWithFilters(
             Integer studentId,

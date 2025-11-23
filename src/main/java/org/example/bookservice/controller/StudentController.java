@@ -3,7 +3,9 @@ package org.example.bookservice.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.example.bookservice.dto.request.StudentCreateRequest;
 import org.example.bookservice.dto.request.StudentSearchRequest;
+import org.example.bookservice.dto.request.StudentUpdateRequest;
 import org.example.bookservice.dto.response.StudentResponse;
 import org.example.bookservice.service.StudentService;
 import org.springframework.data.domain.Page;
@@ -30,5 +32,24 @@ public class StudentController {
     @GetMapping("/{id}")
     public ResponseEntity<StudentResponse> getStudentById(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.getStudentById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<StudentResponse> create(@RequestBody StudentCreateRequest request) {
+        return ResponseEntity.ok(studentService.create(request));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<StudentResponse> update(
+            @PathVariable Long id,
+            @RequestBody StudentUpdateRequest request
+    ) {
+        return ResponseEntity.ok(studentService.update(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        studentService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

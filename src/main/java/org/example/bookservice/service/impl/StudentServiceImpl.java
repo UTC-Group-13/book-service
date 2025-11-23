@@ -59,6 +59,7 @@ public class StudentServiceImpl implements StudentService {
         }
 
         Student student = studentMapper.toEntity(request);
+        student.setDeleteFlg(false);
         student = studentRepository.save(student);
         return studentMapper.toStudentResponse(student);
     }

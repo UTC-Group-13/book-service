@@ -43,4 +43,20 @@ public interface BookLoanRepository extends JpaRepository<BookLoan, Integer> {
 
     @Query("SELECT bl FROM BookLoan bl WHERE bl.dueDate < :date AND bl.status IN :status AND bl.deleteFlg = false")
     List<BookLoan> findExpiredLoans(@Param("date") LocalDate date, @Param("status") List<String> status);
+
+    @Query("SELECT COUNT(bl) FROM BookLoan bl WHERE bl.status = 'BORROWED'")
+    Integer countBorrowed();
+
+    @Query("SELECT COUNT(bl) FROM BookLoan bl WHERE bl.status = 'BORROWED' AND bl.dueDate < :reportDate")
+    Integer countOverdue(@Param("reportDate") LocalDate reportDate);
+
+    @Query("SELECT COUNT(bl) FROM BookLoan bl WHERE bl.status = 'RETURNED' AND bl.returnDate = :reportDate")
+    Integer countReturned(@Param("reportDate") LocalDate reportDate);
+
+    @Query("""
+        SELECT bl 
+        FROM BookLoan bl
+        WHERE bl.status = 'BORROWED' AND bl.dueDate < :reportDate
+    """)
+    List<BookLoan> findOverdueLoans(@Param("reportDate") LocalDate reportDate);
 }

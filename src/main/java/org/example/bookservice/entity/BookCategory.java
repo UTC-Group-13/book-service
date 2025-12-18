@@ -18,12 +18,7 @@ import lombok.*;
 public class BookCategory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_category_seq")
-    @SequenceGenerator(
-            name = "book_category_seq",
-            sequenceName = "BOOK_CATEGORY_SEQ",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "book_id", nullable = false)

@@ -15,12 +15,7 @@ import java.time.LocalDateTime;
 public class Student {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_seq")
-    @SequenceGenerator(
-            name = "student_seq",
-            sequenceName = "STUDENT_SEQ",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 20, nullable = false, unique = true)

@@ -15,12 +15,7 @@ import java.time.LocalDateTime;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_seq")
-    @SequenceGenerator(
-            name = "book_seq",
-            sequenceName = "BOOK_SEQ",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)

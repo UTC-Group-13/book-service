@@ -15,12 +15,7 @@ import java.time.LocalDateTime;
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_seq")
-    @SequenceGenerator(
-            name = "category_seq",
-            sequenceName = "CATEGORY_SEQ",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 255, nullable = false, unique = true)

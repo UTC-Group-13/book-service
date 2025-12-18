@@ -17,12 +17,7 @@ import java.time.LocalDateTime;
 public class BookLoan {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_loan_seq")
-    @SequenceGenerator(
-            name = "book_loan_seq",
-            sequenceName = "BOOK_LOAN_SEQ",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "student_id", nullable = false)

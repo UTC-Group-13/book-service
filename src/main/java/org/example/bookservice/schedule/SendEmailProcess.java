@@ -30,7 +30,7 @@ public class SendEmailProcess {
 
     @Scheduled(cron = "0 0/30 * * * ?")
     void process(){
-        log.info("========= Bat dau tien trinh gui email qua han =========");
+        log.info("========= Bat dau tien trinh gui email that bai =========");
         List<Email> emails = emailService.getAllEmailWithStatus(Status.FAILURE.getValue());
         if(CollectionUtils.isEmpty(emails)){
             log.info("Khong co email gui that bai!");
@@ -49,7 +49,7 @@ public class SendEmailProcess {
                 log.error("Lỗi khi gửi lại email có id: {}, lỗi: {}", email.getId(), e.getMessage(), e);
             }
         }
-        log.info("========= Kết thúc tiến trình thực hiện gửi email thất bại =========");
+        log.info("========= Ket thuc tien trinh gui email that bai =========");
 
     }
 

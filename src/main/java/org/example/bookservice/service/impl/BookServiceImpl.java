@@ -193,6 +193,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public void deleteBook(Long id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
@@ -203,6 +204,8 @@ public class BookServiceImpl implements BookService {
         if (bookLoan != null) {
             bookLoanService.deleteBookLoan(bookLoan.getId());
         }
+        bookCategoryRepository.deleteByBookId(id);
+        bookAuthorRepository.deleteByBookId(id);
         bookRepository.delete(book);
     }
 

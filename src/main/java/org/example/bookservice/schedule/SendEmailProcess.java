@@ -30,10 +30,10 @@ public class SendEmailProcess {
 
     @Scheduled(cron = "0 0/30 * * * ?")
     void process(){
-        log.info("========= Bắt đầu tiến trình thực hiện gửi email thất bại =========");
+        log.info("========= Bat dau tien trinh gui email qua han =========");
         List<Email> emails = emailService.getAllEmailWithStatus(Status.FAILURE.getValue());
         if(CollectionUtils.isEmpty(emails)){
-            log.info("Không có email gửi thất bại!");
+            log.info("Khong co email gui that bai!");
             return;
         }
 

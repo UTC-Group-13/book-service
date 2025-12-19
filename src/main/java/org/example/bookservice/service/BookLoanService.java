@@ -36,9 +36,11 @@ public interface BookLoanService {
 
     void deleteBookLoan(Long id);
 
+    void deleteByBookId(Long bookId);
+
+    boolean existsByBookIdAndStatusNot(Long bookId, String status);
+
     List<BookLoan> findExpiredLoans(LocalDate date, List<String> status);
 
     List<BookLoan> saveAll(List<BookLoan> bookLoans);
-
-    BookLoan getBookLoanByBookId(Long bookId);
 }

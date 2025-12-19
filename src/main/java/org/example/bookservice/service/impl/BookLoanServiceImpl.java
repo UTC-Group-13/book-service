@@ -221,6 +221,18 @@ public class BookLoanServiceImpl implements BookLoanService {
     }
 
     @Override
+    @Transactional
+    public void deleteByBookId(Long bookId) {
+        bookLoanRepository.deleteBookLoanByBookId(bookId);
+    }
+
+    @Override
+    public boolean existsByBookIdAndStatusNot(Long bookId, String status) {
+        List<BookLoan> bookLoans = bookLoanRepository.findAllByBookIdAndStatus(bookId, status);
+        return !CollectionUtils.isEmpty(bookLoans);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<BookLoan> findExpiredLoans(LocalDate date, List<String> status) {
         return bookLoanRepository.findExpiredLoans(date, status);
@@ -232,10 +244,5 @@ public class BookLoanServiceImpl implements BookLoanService {
             throw new BusinessException("BookLoans is empty", "BOOKLOANS_EMPTY");
         }
         return bookLoanRepository.saveAll(bookLoans);
-    }
-
-    @Override
-    public BookLoan getBookLoanByBookId(Long bookId) {
-        return bookLoanRepository.findByBookId(bookId);
     }
 }

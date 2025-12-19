@@ -26,7 +26,7 @@ public class SendEmailExpireProcess {
         this.bookLoanService = bookLoanService;
     }
 
-    @Scheduled(cron = "0 0/30 * * * ?")
+    @Scheduled(cron = "0 0/2 * * * ?")
     void process() {
         log.info("========= Gui email het han =========");
         LocalDate localDate = LocalDate.now();
@@ -40,7 +40,7 @@ public class SendEmailExpireProcess {
             sendEmailRequest.setBookLoans(bookLoans);
             emailService.sendEmailExpire(sendEmailRequest);
         } catch (Exception e) {
-            log.error("Lỗi khi gửi lại email quá han lỗi: {}", e.getMessage(), e);
+            log.error("Loi khi gui email qua han: {}", e.getMessage(), e);
         }
 
         log.info("========= Ket thuc gui email het han =========");

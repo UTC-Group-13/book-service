@@ -66,5 +66,7 @@ public interface BookLoanRepository extends JpaRepository<BookLoan, Long> {
     """)
     List<BookLoan> findOverdueLoans(@Param("reportDate") LocalDate reportDate);
 
-    BookLoan findByBookId(Long bookId);
+    List<BookLoan> findAllByBookIdAndStatus(Long bookId, String status);
+
+    void deleteBookLoanByBookId(Long bookId);
 }

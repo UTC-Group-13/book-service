@@ -21,9 +21,9 @@ import java.util.List;
 public class CalculatorFeeProcess {
     private final BookLoanRepository bookLoanRepository;
     private final BookService bookService;
-    @Scheduled(cron = "0 0/2 * * * ?")
+    @Scheduled(cron = "0 0/1 * * * ?")
     private void process(){
-        log.info("========= Bắt đầu tiến trình tính phí trễ hạn =========");
+        log.info("========= Bat dau tien trinh thanh toan phi tre han =========");
         List<BookLoan> bookLoans = bookLoanRepository.findExpiredLoans(LocalDate.now(), List.of(Status.BORROWING.getValue(), Status.LATE.getValue()));
         for (BookLoan bookLoan : bookLoans) {
             LocalDate today = LocalDate.now();
@@ -38,9 +38,9 @@ public class CalculatorFeeProcess {
                 bookLoan.setStatus(Status.LATE.getValue());
                 bookLoan.setUpdatedAt(LocalDateTime.now());
                 bookLoanRepository.save(bookLoan);
-                log.info("Cập nhật phí trễ hạn cho mượn sách ID: {}, Phí trễ hạn: {}", bookLoan.getId(), fee);
+                log.info("Cap nhap phi tre han ID: {}, Phi tre han: {}", bookLoan.getId(), fee);
             }
         }
-        log.info("========= Kết thúc tiến trình tính phí trễ hạn =========");
+        log.info("========= Ket thuc tien trinh tinh phi tre han =========");
     }
 }

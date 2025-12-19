@@ -18,6 +18,7 @@ import org.example.bookservice.service.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Set;
@@ -197,13 +198,15 @@ public class BookServiceImpl implements BookService {
     public void deleteBook(Long id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
-        BookLoan bookLoan = bookLoanService.getBookLoanByBookId(id);
-        if (bookLoan != null && Boolean.TRUE.equals(bookLoan.getDeleteFlg()) && !"RETURNED".equals(bookLoan.getStatus())) {
-            throw new BusinessException("DELETE_INVALID", "Sách đang được mượn không thể xóa.");
+
+        boolean isBorrowing = bookLoanService.existsByBookIdAndStatusNot(id, "BORROWING");
+        if (isBorrowing) {
+            throw new BusinessException(
+                    "DELETE_INVALID",
+                    "Sách đang được mượn, không thể xoá."
+            );
         }
-        if (bookLoan != null) {
-            bookLoanService.deleteBookLoan(bookLoan.getId());
-        }
+        bookLoanService.deleteByBookId(id);
         bookCategoryRepository.deleteByBookId(id);
         bookAuthorRepository.deleteByBookId(id);
         bookRepository.delete(book);

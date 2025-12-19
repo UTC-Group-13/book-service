@@ -108,7 +108,7 @@ public class EmailServiceImpl implements EmailService {
         }
         List<BookLoan> bookLoans = sendEmailRequest.getBookLoans();
         if (CollectionUtils.isEmpty(bookLoans)) {
-            log.warn("Không có phiếu mượn nào để gửi email quá hạn.");
+            log.warn("Khong co phieu muon nao de gui email qua han.");
             return;
         }
         List<Long> lstBookIds = bookLoans.stream().map(BookLoan::getBookId).toList();
@@ -128,8 +128,8 @@ public class EmailServiceImpl implements EmailService {
                 List<Map<String, Object>> loansForTemplate = new ArrayList<>();
                 for (BookLoan loan : loansOfStudent) {
                     LocalDate today = LocalDate.now();
-                    if(today.equals(loan.getLastEmailSentDate())){
-                        log.info("Đã gửi email nhắc trả sách trong hôm nay cho sinh viên: {}, bỏ qua...", studentResponse.getFullName());
+                    if(loan.getLastEmailSentDate() != null && today.equals(loan.getLastEmailSentDate())){
+                        log.info("Da gui email nhac tra sach trong hom nay cho sinh vien: {}, bo qua...", studentResponse.getFullName());
                         continue;
                     }
                     Book book = lstBook.stream()
@@ -152,7 +152,7 @@ public class EmailServiceImpl implements EmailService {
                 }
 
                 if (loansForTemplate.isEmpty()) {
-                    log.info("Không có sách quá hạn để gửi email cho sinh viên {}", studentResponse.getFullName());
+                    log.info("Khong co sach qua han de gui email cho sinh vien {}", studentResponse.getFullName());
                     continue;
                 }
 
@@ -184,7 +184,7 @@ public class EmailServiceImpl implements EmailService {
                 helper.setText(htmlContent, true);
                 javaMailSender.send(mimeMessage);
 
-                log.info("Đã gửi email nhắc trả sách cho sinh viên: {}", studentResponse.getFullName());
+                log.info("Da gui email nhac tra sach cho sinh vien {}", studentResponse.getFullName());
             }
             // Lưu log email gửi thành công
             email.setStatus(Status.SUCCESS.getValue());
@@ -197,7 +197,7 @@ public class EmailServiceImpl implements EmailService {
                     .collect(Collectors.joining(",")));
             emailRepository.save(email);
             bookLoanService.saveAll(lstBkLoan);
-            log.info("Đã gửi email quá hạn thành công cho sinh viên {}", studentResponse.getFullName());
+            log.info("Da gui email qua han thanh cong cho sinh vien {}", studentResponse.getFullName());
         } catch (Exception e) {
             log.error("Error when send email: {}", e.getMessage(), e);
             email.setStatus(Status.FAILURE.getValue());

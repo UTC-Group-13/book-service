@@ -1,6 +1,8 @@
 package org.example.bookservice.service.impl;
 
+
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
 import org.example.bookservice.constant.Status;
 import org.example.bookservice.dto.exception.BusinessException;
 import org.example.bookservice.dto.request.BookLoanRequest;
@@ -12,6 +14,7 @@ import org.example.bookservice.entity.Student;
 import org.example.bookservice.mapper.BookLoanMapper;
 import org.example.bookservice.mapper.BookMapper;
 import org.example.bookservice.mapper.StudentMapper;
+import org.example.bookservice.repository.BookLoanCustomRepository;
 import org.example.bookservice.repository.BookLoanRepository;
 import org.example.bookservice.repository.BookRepository;
 import org.example.bookservice.repository.StudentRepository;
@@ -26,7 +29,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,6 +42,7 @@ public class BookLoanServiceImpl implements BookLoanService {
     private final EmailService emailService;
     private final BookMapper bookMapper;
     private final StudentMapper studentMapper;
+    private final BookLoanCustomRepository bookLoanCustomRepository;
 
     public BookLoanServiceImpl(
             BookLoanRepository bookLoanRepository,
@@ -47,7 +50,7 @@ public class BookLoanServiceImpl implements BookLoanService {
             StudentRepository studentRepository,
             BookLoanMapper bookLoanMapper,
             @Lazy EmailService emailService,
-            BookMapper bookMapper, StudentMapper studentMapper) {
+            BookMapper bookMapper, StudentMapper studentMapper, BookLoanCustomRepository bookLoanCustomRepository) {
         this.bookLoanRepository = bookLoanRepository;
         this.bookRepository = bookRepository;
         this.studentRepository = studentRepository;
@@ -55,6 +58,7 @@ public class BookLoanServiceImpl implements BookLoanService {
         this.emailService = emailService;
         this.bookMapper = bookMapper;
         this.studentMapper = studentMapper;
+        this.bookLoanCustomRepository = bookLoanCustomRepository;
     }
 
     // You may externalize these as config later
@@ -75,7 +79,7 @@ public class BookLoanServiceImpl implements BookLoanService {
             String search,
             Pageable pageable
     ) {
-        Page<BookLoan> bookLoanPage = bookLoanRepository.findAllWithFilters(studentId, bookId, adminId, status,
+        Page<BookLoan> bookLoanPage = bookLoanCustomRepository.search(studentId, bookId, adminId, status,
                 borrowFrom, borrowTo, dueFrom, dueTo, onlyNotReturned, onlyOverdue, search, pageable);
         Set<Long> bookIds = new HashSet<>();
         Set<Long> studentIds = new HashSet<>();

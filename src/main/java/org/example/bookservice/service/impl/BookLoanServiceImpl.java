@@ -2,7 +2,6 @@ package org.example.bookservice.service.impl;
 
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PersistenceContext;
 import org.example.bookservice.constant.Status;
 import org.example.bookservice.dto.exception.BusinessException;
 import org.example.bookservice.dto.request.BookLoanRequest;
@@ -144,7 +143,7 @@ public class BookLoanServiceImpl implements BookLoanService {
     }
 
     @Override
-    public BookLoanResponse getBookLoanById(Integer id) {
+    public BookLoanResponse getBookLoanById(Long id) {
         BookLoan loan = bookLoanRepository.findById(id)
                 .filter(l -> Boolean.FALSE.equals(l.getDeleteFlg()))
                 .orElseThrow(() -> new EntityNotFoundException("BookLoan not found"));
@@ -153,7 +152,7 @@ public class BookLoanServiceImpl implements BookLoanService {
 
     @Override
     @Transactional
-    public BookLoanResponse updateBookLoan(Integer id, BookLoanRequest request) {
+    public BookLoanResponse updateBookLoan(Long id, BookLoanRequest request) {
         BookLoan loan = bookLoanRepository.findById(id)
                 .filter(l -> Boolean.FALSE.equals(l.getDeleteFlg()))
                 .orElseThrow(() -> new EntityNotFoundException("BookLoan not found"));
@@ -173,7 +172,7 @@ public class BookLoanServiceImpl implements BookLoanService {
 
     @Override
     @Transactional
-    public BookLoanResponse returnBookLoan(Integer id, LocalDate returnDate) {
+    public BookLoanResponse returnBookLoan(Long id, LocalDate returnDate) {
         BookLoan loan = bookLoanRepository.findById(id)
                 .filter(l -> Boolean.FALSE.equals(l.getDeleteFlg()))
                 .orElseThrow(() -> new EntityNotFoundException("BookLoan not found"));
@@ -212,7 +211,7 @@ public class BookLoanServiceImpl implements BookLoanService {
 
     @Override
     @Transactional
-    public void deleteBookLoan(Integer id) {
+    public void deleteBookLoan(Long id) {
         BookLoan loan = bookLoanRepository.findById(id)
                 .filter(l -> Boolean.FALSE.equals(l.getDeleteFlg()))
                 .orElseThrow(() -> new EntityNotFoundException("BookLoan not found"));
@@ -233,5 +232,10 @@ public class BookLoanServiceImpl implements BookLoanService {
             throw new BusinessException("BookLoans is empty", "BOOKLOANS_EMPTY");
         }
         return bookLoanRepository.saveAll(bookLoans);
+    }
+
+    @Override
+    public BookLoan getBookLoanByBookId(Long bookId) {
+        return bookLoanRepository.findByBookId(bookId);
     }
 }

@@ -1,6 +1,7 @@
 package org.example.bookservice.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.example.bookservice.dto.exception.BusinessException;
 import org.example.bookservice.dto.request.BookRequest;
 import org.example.bookservice.dto.request.BookSearchRequest;
 import org.example.bookservice.dto.response.AuthorResponse;
@@ -12,6 +13,7 @@ import org.example.bookservice.mapper.BookMapper;
 import org.example.bookservice.mapper.CategoryMapper;
 import org.example.bookservice.mapper.PublisherMapper;
 import org.example.bookservice.repository.*;
+import org.example.bookservice.service.BookLoanService;
 import org.example.bookservice.service.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,7 @@ public class BookServiceImpl implements BookService {
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
     private final PublisherRepository publisherRepository;
+    private final BookLoanService bookLoanService;
     private final PublisherMapper publisherMapper;
 
     @Override
@@ -193,6 +196,13 @@ public class BookServiceImpl implements BookService {
     public void deleteBook(Long id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
+        BookLoan bookLoan = bookLoanService.getBookLoanByBookId(id);
+        if (bookLoan != null && Boolean.TRUE.equals(bookLoan.getDeleteFlg()) && !"RETURNED".equals(bookLoan.getStatus())) {
+            throw new BusinessException("DELETE_INVALID", "Sách đang được mượn không thể xóa.");
+        }
+        if (bookLoan != null) {
+            bookLoanService.deleteBookLoan(bookLoan.getId());
+        }
         bookRepository.delete(book);
     }
 

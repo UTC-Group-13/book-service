@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface BookLoanRepository extends JpaRepository<BookLoan, Integer> {
+public interface BookLoanRepository extends JpaRepository<BookLoan, Long> {
 
     @Query("""
             SELECT bl FROM BookLoan bl
@@ -65,4 +65,6 @@ public interface BookLoanRepository extends JpaRepository<BookLoan, Integer> {
         WHERE bl.status = 'BORROWED' AND bl.dueDate < :reportDate
     """)
     List<BookLoan> findOverdueLoans(@Param("reportDate") LocalDate reportDate);
+
+    BookLoan findByBookId(Long bookId);
 }

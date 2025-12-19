@@ -55,20 +55,20 @@ public class BookLoanController {
 
     @Operation(summary = "Get a book loan by ID", description = "Fetch a single loan by ID")
     @GetMapping("/{id}")
-    public ResponseEntity<BookLoanResponse> getBookLoanById(@PathVariable Integer id) {
+    public ResponseEntity<BookLoanResponse> getBookLoanById(@PathVariable Long id) {
         return ResponseEntity.ok(bookLoanService.getBookLoanById(id));
     }
 
     @Operation(summary = "Update a book loan", description = "Update due date or admin of an existing loan")
     @PutMapping("/{id}")
-    public ResponseEntity<BookLoanResponse> updateBookLoan(@PathVariable Integer id, @RequestBody BookLoanRequest request) {
+    public ResponseEntity<BookLoanResponse> updateBookLoan(@PathVariable Long id, @RequestBody BookLoanRequest request) {
         return ResponseEntity.ok(bookLoanService.updateBookLoan(id, request));
     }
 
     @Operation(summary = "Return a book loan", description = "Marks a loan as returned; increments book stock; calculates late fee if overdue")
     @PostMapping("/{id}/return")
     public ResponseEntity<BookLoanResponse> returnBookLoan(
-            @PathVariable Integer id,
+            @PathVariable Long id,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate returnDate
     ) {
         return ResponseEntity.ok(bookLoanService.returnBookLoan(id, returnDate));
@@ -76,7 +76,7 @@ public class BookLoanController {
 
     @Operation(summary = "Delete a book loan", description = "Soft deletes a loan")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBookLoan(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteBookLoan(@PathVariable Long id) {
         bookLoanService.deleteBookLoan(id);
         return ResponseEntity.noContent().build();
     }

@@ -28,15 +28,17 @@ public interface BookLoanService {
 
     BookLoanResponse createBookLoan(BookLoanRequest request);
 
-    BookLoanResponse getBookLoanById(Integer id);
+    BookLoanResponse getBookLoanById(Long id);
 
-    BookLoanResponse updateBookLoan(Integer id, BookLoanRequest request);
+    BookLoanResponse updateBookLoan(Long id, BookLoanRequest request);
 
-    BookLoanResponse returnBookLoan(Integer id, LocalDate returnDate);
+    BookLoanResponse returnBookLoan(Long id, LocalDate returnDate);
 
-    void deleteBookLoan(Integer id);
+    void deleteBookLoan(Long id);
 
     List<BookLoan> findExpiredLoans(LocalDate date, List<String> status);
 
     List<BookLoan> saveAll(List<BookLoan> bookLoans);
+
+    BookLoan getBookLoanByBookId(Long bookId);
 }

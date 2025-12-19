@@ -15,19 +15,23 @@ import java.util.List;
 public interface BookLoanRepository extends JpaRepository<BookLoan, Integer> {
 
     @Query("""
-        SELECT bl FROM BookLoan bl
-        WHERE bl.deleteFlg = false
-          AND ((:studentId IS NULL OR bl.studentId = :studentId)
-          OR (:bookId IS NULL OR bl.bookId = :bookId)
-          OR (:status IS NULL OR bl.status = :status)
-          OR (:borrowFrom IS NULL OR bl.borrowDate >= :borrowFrom)
-          OR (:borrowTo IS NULL OR bl.borrowDate <= :borrowTo)
-          OR (:dueFrom IS NULL OR bl.dueDate >= :dueFrom)
-          OR (:dueTo IS NULL OR bl.dueDate <= :dueTo)
-          OR (:onlyNotReturned IS NULL OR (:onlyNotReturned = true AND bl.returnDate IS NULL) OR (:onlyNotReturned = false))
-          OR (:onlyOverdue IS NULL OR (:onlyOverdue = true AND bl.returnDate IS NULL AND bl.dueDate < CURRENT_DATE) OR (:onlyOverdue = false)))
-        ORDER BY bl.id DESC
-        """)
+            SELECT bl FROM BookLoan bl
+            JOIN Book b ON b.id = bl.bookId
+            JOIN Student s ON s.id = bl.studentId
+            WHERE bl.deleteFlg = false
+              AND ((:studentId IS NULL OR bl.studentId = :studentId)
+              OR (:bookId IS NULL OR bl.bookId = :bookId)
+              OR (:status IS NULL OR bl.status = :status)
+              OR (:borrowFrom IS NULL OR bl.borrowDate >= :borrowFrom)
+              OR (:borrowTo IS NULL OR bl.borrowDate <= :borrowTo)
+              OR (:dueFrom IS NULL OR bl.dueDate >= :dueFrom)
+              OR (:dueTo IS NULL OR bl.dueDate <= :dueTo)
+              OR (:onlyNotReturned IS NULL OR (:onlyNotReturned = true AND bl.returnDate IS NULL) OR (:onlyNotReturned = false))
+              OR (:onlyOverdue IS NULL OR (:onlyOverdue = true AND bl.returnDate IS NULL AND bl.dueDate < CURRENT_DATE) OR (:onlyOverdue = false))
+              OR (:search IS NULL OR LOWER(s.fullName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
+              ))
+            ORDER BY bl.id DESC
+            """)
     Page<BookLoan> findAllWithFilters(
             Integer studentId,
             Integer bookId,
@@ -39,6 +43,7 @@ public interface BookLoanRepository extends JpaRepository<BookLoan, Integer> {
             LocalDate dueTo,
             Boolean onlyNotReturned,
             Boolean onlyOverdue,
+            String search,
             Pageable pageable
     );
 

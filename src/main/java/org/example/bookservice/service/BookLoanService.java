@@ -22,6 +22,7 @@ public interface BookLoanService {
             LocalDate dueTo,
             Boolean onlyNotReturned,
             Boolean onlyOverdue,
+            String search,
             Pageable pageable
     );
 

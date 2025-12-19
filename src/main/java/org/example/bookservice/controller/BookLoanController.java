@@ -35,13 +35,14 @@ public class BookLoanController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dueTo,
             @RequestParam(required = false) Boolean onlyNotReturned,
             @RequestParam(required = false) Boolean onlyOverdue,
+            @RequestParam(required = false) String search,
             Pageable pageable
     ) {
         return ResponseEntity.ok(
                 bookLoanService.getAllBookLoans(
                         studentId, bookId, adminId, status,
                         borrowFrom, borrowTo, dueFrom, dueTo,
-                        onlyNotReturned, onlyOverdue, pageable
+                        onlyNotReturned, onlyOverdue, search, pageable
                 )
         );
     }

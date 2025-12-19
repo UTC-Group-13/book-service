@@ -72,6 +72,7 @@ public class BookLoanServiceImpl implements BookLoanService {
             LocalDate dueTo,
             Boolean onlyNotReturned,
             Boolean onlyOverdue,
+            String search,
             Pageable pageable
     ) {
         Page<BookLoan> bookLoanPage = bookLoanRepository.findAllWithFilters(studentId, bookId, adminId, status,

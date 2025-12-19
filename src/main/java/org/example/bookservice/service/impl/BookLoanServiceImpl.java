@@ -76,7 +76,7 @@ public class BookLoanServiceImpl implements BookLoanService {
             Pageable pageable
     ) {
         Page<BookLoan> bookLoanPage = bookLoanRepository.findAllWithFilters(studentId, bookId, adminId, status,
-                borrowFrom, borrowTo, dueFrom, dueTo, onlyNotReturned, onlyOverdue, pageable);
+                borrowFrom, borrowTo, dueFrom, dueTo, onlyNotReturned, onlyOverdue, search, pageable);
         Set<Long> bookIds = new HashSet<>();
         Set<Long> studentIds = new HashSet<>();
         for (BookLoan bookLoan : bookLoanPage.getContent()) {

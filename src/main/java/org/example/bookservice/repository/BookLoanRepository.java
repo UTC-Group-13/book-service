@@ -28,7 +28,7 @@ public interface BookLoanRepository extends JpaRepository<BookLoan, Integer> {
               OR (:dueTo IS NULL OR bl.dueDate <= :dueTo)
               OR (:onlyNotReturned IS NULL OR (:onlyNotReturned = true AND bl.returnDate IS NULL) OR (:onlyNotReturned = false))
               OR (:onlyOverdue IS NULL OR (:onlyOverdue = true AND bl.returnDate IS NULL AND bl.dueDate < CURRENT_DATE) OR (:onlyOverdue = false))
-              OR (:search IS NULL OR LOWER(s.fullName) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
+              OR (:search IS NULL OR LOWER(s.fullName) LIKE LOWER(CONCAT('%', :search, '%')) OR LOWER(b.title) LIKE LOWER(CONCAT('%', :search, '%'))
               ))
             ORDER BY bl.id DESC
             """)

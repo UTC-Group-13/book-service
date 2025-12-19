@@ -201,9 +201,8 @@ public class BookServiceImpl implements BookService {
 
         boolean isBorrowing = bookLoanService.existsByBookIdAndStatusNot(id, "BORROWING");
         if (isBorrowing) {
-            throw new BusinessException(
-                    "DELETE_INVALID",
-                    "Sách đang được mượn, không thể xoá."
+            throw new BusinessException("Sách đang được mượn, không thể xoá.",
+                    "DELETE_INVALID"
             );
         }
         bookLoanService.deleteByBookId(id);
